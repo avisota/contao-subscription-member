@@ -8,7 +8,7 @@
  *
  * @copyright  bit3 UG 2013
  * @author     Tristan Lins <tristan.lins@bit3.de>
- * @package    avisota
+ * @package    avisota/contao-subscription-member
  * @license    LGPL-3.0+
  * @filesource
  */
@@ -39,7 +39,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  * MemberSubscriptionManager = $container->get('avisota.subscription');
  * </pre>
  *
- * @package Avisota
+ * @package    avisota/contao-subscription-member
  */
 class MemberSubscriptionManager extends \Controller implements SubscriptionManagerInterface
 {

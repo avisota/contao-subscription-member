@@ -8,28 +8,28 @@
  *
  * @copyright  bit3 UG 2013
  * @author     Tristan Lins <tristan.lins@bit3.de>
- * @package    avisota
+ * @package    avisota/contao-subscription-member
  * @license    LGPL-3.0+
  * @filesource
  */
 
-namespace Avisota\Contao\SubscriptionMember\Subscription;
+namespace Avisota\Contao\Core\SubscriptionMember\Subscription;
 
 use Avisota\Contao\Entity\MailingList;
 use Avisota\Contao\Entity\Recipient;
 use Avisota\Contao\Entity\RecipientBlacklist;
 use Avisota\Contao\Entity\MemberSubscription;
-use Avisota\Contao\Event\ConfirmSubscriptionEvent;
-use Avisota\Contao\Event\RecipientEvent;
-use Avisota\Contao\Event\SubscribeEvent;
-use Avisota\Contao\Event\UnsubscribeEvent;
+use Avisota\Contao\Core\Event\ConfirmSubscriptionEvent;
+use Avisota\Contao\Core\Event\RecipientEvent;
+use Avisota\Contao\Core\Event\SubscribeEvent;
+use Avisota\Contao\Core\Event\UnsubscribeEvent;
 use Contao\Doctrine\ORM\EntityHelper;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Class MemberSubscriptionManager
  *
- * @package Avisota
+ * @package    avisota/contao-subscription-member
  */
 class MemberSubscriptionManager implements SubscriptionManagerInterface
 {
