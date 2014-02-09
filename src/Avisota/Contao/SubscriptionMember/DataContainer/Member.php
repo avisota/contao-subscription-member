@@ -12,11 +12,11 @@
  * @filesource
  */
 
-namespace Avisota\Contao\SubscriptionMember\DataContainer;
+namespace Avisota\Contao\Core\SubscriptionMember\DataContainer;
 
 use Avisota\Contao\Entity\MailingList;
 use Avisota\Contao\Entity\RecipientBlacklist;
-use Avisota\Contao\Subscription\MemberSubscriptionManager;
+use Avisota\Contao\Core\Subscription\MemberSubscriptionManager;
 use Contao\Doctrine\ORM\EntityHelper;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Join;

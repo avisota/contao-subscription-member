@@ -20,7 +20,7 @@
 
 $container['avisota.subscription.member'] = $container->share(
 	function ($container) {
-		return new \Avisota\Contao\SubscriptionMember\Subscription\MemberSubscriptionManager();
+		return new \Avisota\Contao\Core\SubscriptionMember\Subscription\MemberSubscriptionManager();
 	}
 );
 

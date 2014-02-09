@@ -13,17 +13,17 @@
  * @filesource
  */
 
-namespace Avisota\Contao\SubscriptionMember\Subscription;
+namespace Avisota\Contao\Core\SubscriptionMember\Subscription;
 
 use Avisota\Contao\Entity\MailingList;
 use Avisota\Contao\Entity\Recipient;
 use Avisota\Contao\Entity\RecipientBlacklist;
 use Avisota\Contao\Entity\MemberSubscription;
-use Avisota\Contao\Event\ConfirmSubscriptionEvent;
-use Avisota\Contao\Event\RecipientEvent;
-use Avisota\Contao\Event\SubscribeEvent;
-use Avisota\Contao\Event\UnsubscribeEvent;
-use Avisota\Contao\Subscription\SubscriptionManagerInterface;
+use Avisota\Contao\Core\Event\ConfirmSubscriptionEvent;
+use Avisota\Contao\Core\Event\RecipientEvent;
+use Avisota\Contao\Core\Event\SubscribeEvent;
+use Avisota\Contao\Core\Event\UnsubscribeEvent;
+use Avisota\Contao\Core\Subscription\SubscriptionManagerInterface;
 use Contao\Doctrine\ORM\EntityHelper;
 use Model\Collection;
 use Symfony\Component\EventDispatcher\EventDispatcher;
