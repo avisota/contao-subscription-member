@@ -18,3 +18,9 @@
  * Entities
  */
 $GLOBALS['DOCTRINE_ENTITIES'][] = 'orm_avisota_member_subscription';
+
+
+/**
+ * Recipient sources
+ */
+$GLOBALS['AVISOTA_RECIPIENT_SOURCE']['integrated_member_by_mailing_list'] = 'Avisota\Contao\Core\RecipientSource\IntegratedRecipientsAndMembersByMailingListFactory';
