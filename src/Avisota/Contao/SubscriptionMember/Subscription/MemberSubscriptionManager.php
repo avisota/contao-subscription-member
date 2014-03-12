@@ -19,11 +19,9 @@ use Avisota\Contao\Entity\MailingList;
 use Avisota\Contao\Entity\Recipient;
 use Avisota\Contao\Entity\RecipientBlacklist;
 use Avisota\Contao\Entity\MemberSubscription;
-use Avisota\Contao\Core\Event\ConfirmSubscriptionEvent;
-use Avisota\Contao\Core\Event\RecipientEvent;
-use Avisota\Contao\Core\Event\SubscribeEvent;
-use Avisota\Contao\Core\Event\UnsubscribeEvent;
+use Avisota\Contao\Subscription\Event\ConfirmSubscriptionEvent;
 use Avisota\Contao\Core\Subscription\SubscriptionManagerInterface;
+use Avisota\Contao\Subscription\SubscriptionEvents;
 use Contao\Doctrine\ORM\EntityHelper;
 use Model\Collection;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -317,7 +315,7 @@ class MemberSubscriptionManager extends \Controller implements SubscriptionManag
             $entityManager->persist($subscription);
 
             $eventDispatcher->dispatch(
-                    ConfirmSubscriptionEvent::NAME, new ConfirmSubscriptionEvent($recipient, $subscription)
+                    SubscriptionEvents::CONFIRM_SUBSCRIPTION, new ConfirmSubscriptionEvent($recipient, $subscription)
             );
         }
 
