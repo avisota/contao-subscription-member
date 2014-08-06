@@ -24,7 +24,8 @@
 	"require":{
 		"php":">=5.3",
 		"contao-community-alliance/composer-installer": "~1.6",
-		"avisota/contao-core": "~2.0",
+		"contao/core": ">=2.11.11,<3.4",
+		"avisota/contao-core": "~2.0-RC9",
 		"avisota/contao-subscription": "~2.0"
 	},
 	"require-dev":{
@@ -36,7 +37,7 @@
 	"prefer-stable": true,
 	"autoload":{
 		"psr-0":{
-			"Avisota": "src/"
+			"Avisota\\Contao\\SubscriptionMember": "src/"
 		}
 	},
 	"extra": {

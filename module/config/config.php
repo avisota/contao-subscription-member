@@ -15,12 +15,11 @@
 
 
 /**
- * Entities
- */
-$GLOBALS['DOCTRINE_ENTITIES'][] = 'orm_avisota_member_subscription';
-
-
-/**
  * Recipient sources
  */
-$GLOBALS['AVISOTA_RECIPIENT_SOURCE']['integrated_member_by_mailing_list'] = 'Avisota\Contao\Core\RecipientSource\IntegratedRecipientsAndMembersByMailingListFactory';
+$GLOBALS['AVISOTA_RECIPIENT_SOURCE']['members'] = 'Avisota\Contao\SubscriptionMember\RecipientSource\MembersRecipientSourceFactory';
+
+/**
+ * Event subscribers
+ */
+$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Avisota\Contao\SubscriptionMember\EventsSubscriber';

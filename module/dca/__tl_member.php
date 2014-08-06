@@ -13,8 +13,6 @@
  * @filesource
  */
 
-use Avisota\Contao\Core\CoreEvents;
-use ContaoCommunityAlliance\Contao\Events\CreateOptions\CreateOptionsEventCallbackFactory;
 
 MetaPalettes::appendBefore('tl_member', 'default', 'login', array('avisota' => array(':hide', 'avisota_lists', 'avisota_subscriptionAction')));
 /*
@@ -28,7 +26,10 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['avisota_lists'] = array
 (
 	'label'            => &$GLOBALS['TL_LANG']['tl_member']['avisota_lists'],
 	'inputType'        => 'checkbox',
-	'options_callback' => CreateOptionsEventCallbackFactory::createCallback(CoreEvents::CREATE_MAILING_LIST_OPTIONS),
+	'options_callback' => \ContaoCommunityAlliance\Contao\Events\CreateOptions\CreateOptionsEventCallbackFactory::createCallback(
+		\Avisota\Contao\Core\CoreEvents::CREATE_MAILING_LIST_OPTIONS,
+		'Avisota\Contao\Core\Event\CreateOptionsEvent'
+	),
 	'load_callback'    => array(array('Avisota\Contao\Core\DataContainer\Member', 'loadMailingLists')),
 	'save_callback'    => array
 	(
