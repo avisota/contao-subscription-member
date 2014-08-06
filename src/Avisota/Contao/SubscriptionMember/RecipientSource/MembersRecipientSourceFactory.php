@@ -39,7 +39,7 @@ class MembersRecipientSourceFactory implements RecipientSourceFactoryInterface
 				$recipientSource->setFilteredMailingLists($recipientSourceEntity->getMailingLists()->toArray());
 			}
 			*/
-			if ($recipientSourceEntity->getRecipientsUsePropertyFilter()) {
+			if ($recipientSourceEntity->getMembersUsePropertyFilter()) {
 				$recipientSource->setFilteredProperties($recipientSourceEntity->getMembersPropertyFilter());
 			}
 		}
