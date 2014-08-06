@@ -59,8 +59,36 @@ class EventsSubscriber implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return array(
-			'avisota.subscription-notification-center-bridge.build-tokens-from-recipient' => 'buildRecipientTokens',
+			GetPropertyOptionsEvent::NAME . '[orm_avisota_recipient_source][membersPropertyFilter][membersPropertyFilter_property]' => 'bypassCreateRecipientPropertiesOptions',
+			'avisota.subscription-notification-center-bridge.build-tokens-from-recipient'                                           => 'buildRecipientTokens',
 		);
+	}
+
+	public function bypassCreateRecipientPropertiesOptions(GetPropertyOptionsEvent $event)
+	{
+		$options = $event->getOptions();
+		$options = $this->getRecipientPropertiesOptions($event->getEnvironment(), $options);
+		$event->setOptions($options);
+	}
+
+	public function getRecipientPropertiesOptions(EnvironmentInterface $environment, $options = array())
+	{
+		/** @var EventDispatcher $eventDispatcher */
+		$eventDispatcher = $GLOBALS['container']['event-dispatcher'];
+
+		$loadDataContainerEvent = new LoadDataContainerEvent('tl_member');
+		$eventDispatcher->dispatch(ContaoEvents::CONTROLLER_LOAD_DATA_CONTAINER, $loadDataContainerEvent);
+
+		$loadLanguageFileEvent = new LoadLanguageFileEvent('tl_member');
+		$eventDispatcher->dispatch(ContaoEvents::SYSTEM_LOAD_LANGUAGE_FILE, $loadLanguageFileEvent);
+
+		foreach ($GLOBALS['TL_DCA']['tl_member']['fields'] as $field => $config) {
+			$options[$field] = is_array($config['label'])
+				? $config['label'][0]
+				: $field;
+		}
+
+		return $options;
 	}
 
 	public function buildRecipientTokens(BuildTokensFromRecipientEvent $event)

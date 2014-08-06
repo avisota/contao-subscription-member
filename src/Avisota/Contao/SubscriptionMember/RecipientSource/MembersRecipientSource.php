@@ -218,7 +218,7 @@ class MembersRecipientSource implements RecipientSourceInterface
 
 		if (count($this->filteredProperties)) {
 			foreach ($this->filteredProperties as $index => $filteredProperty) {
-				$property   = 'n.' . $filteredProperty['membersPropertyFilter_property'];
+				$property   = 'm.' . $filteredProperty['membersPropertyFilter_property'];
 				$comparator = $filteredProperty['membersPropertyFilter_comparator'];
 				$value      = $filteredProperty['membersPropertyFilter_value'];
 
