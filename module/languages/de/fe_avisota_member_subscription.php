@@ -11,9 +11,9 @@
  * last-updated: 2014-08-07T04:02:29+02:00
  */
 
-
 $GLOBALS['TL_LANG']['fe_avisota_member_subscription']['allreadySubscribed']    = 'Vielen Dank, aber Sie sind bereits für diesen Newsletter angemeldet.';
 $GLOBALS['TL_LANG']['fe_avisota_member_subscription']['confirm']               = 'Abonnement bestätigen';
+$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['manage_subscription']   = 'Verwalten Sie Ihr Abonnement';
 $GLOBALS['TL_LANG']['fe_avisota_member_subscription']['notSubscribed']         = 'Sie sind für diesen Newsletter nicht angemeldet.';
 $GLOBALS['TL_LANG']['fe_avisota_member_subscription']['subscribe']             = 'Anmelden';
 $GLOBALS['TL_LANG']['fe_avisota_member_subscription']['subscribeConfirmation'] = 'Ihre Anmeldung wurde erfolgreich aktiviert.';
