@@ -71,7 +71,9 @@ class MembersRecipientSource implements RecipientSourceInterface
 		$queryBuilder = $connection->createQueryBuilder();
 		$queryBuilder
 			->select('COUNT(m.id)')
-			->from('tl_member', 'm');
+			->from('tl_member', 'm')
+            ->where('email IS NOT NULL')
+            ->andWhere('LENGTH(email) > 0');
 		$this->prepareQuery($queryBuilder);
 
 		/** @var Statement $stmt */
@@ -93,7 +95,9 @@ class MembersRecipientSource implements RecipientSourceInterface
 		$queryBuilder = $connection->createQueryBuilder();
 		$queryBuilder
 			->select('m.*')
-			->from('tl_member', 'm');
+			->from('tl_member', 'm')
+            ->where('email IS NOT NULL')
+            ->andWhere('LENGTH(email) > 0');
 		$this->prepareQuery($queryBuilder);
 
 		if ($limit > 0) {
