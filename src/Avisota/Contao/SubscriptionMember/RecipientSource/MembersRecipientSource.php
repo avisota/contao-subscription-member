@@ -71,7 +71,9 @@ class MembersRecipientSource implements RecipientSourceInterface
 		$queryBuilder = $connection->createQueryBuilder();
 		$queryBuilder
 			->select('COUNT(m.id)')
-			->from('tl_member', 'm');
+			->from('tl_member', 'm')
+            ->where('email IS NOT NULL')
+            ->andWhere('LENGTH(email) > 0');
 		$this->prepareQuery($queryBuilder);
 
 		/** @var Statement $stmt */
@@ -93,7 +95,9 @@ class MembersRecipientSource implements RecipientSourceInterface
 		$queryBuilder = $connection->createQueryBuilder();
 		$queryBuilder
 			->select('m.*')
-			->from('tl_member', 'm');
+			->from('tl_member', 'm')
+            ->where('email IS NOT NULL')
+            ->andWhere('LENGTH(email) > 0');
 		$this->prepareQuery($queryBuilder);
 
 		if ($limit > 0) {
@@ -179,26 +183,36 @@ class MembersRecipientSource implements RecipientSourceInterface
 				switch ($condition) {
 					case 'in':
 						$where = $expr->orX();
-						$where->add($expr->like('m.groups', ':groupPattern1_' . $index));
-						$where->add($expr->like('m.groups', ':groupPattern2_' . $index));
+						$where->add('m.groups REGEXP :groupPattern_' . $index);
 						break;
 
 					case 'not in':
 						$where = $expr->andX();
-						$where->add($expr->notLike('m.groups', ':groupPattern1_' . $index));
-						$where->add($expr->notLike('m.groups', ':groupPattern2_' . $index));
+						$where->add('m.groups NOT REGEXP :groupPattern_' . $index);
 						break;
 
 					default:
 						continue 2;
 				}
 
+                // The REGEXP pattern:
+                //   ^a:[[:digit:]]+:\{([is]:[[:digit:]]+(:"[[:alnum:]]+")?;[is]:[[:digit:]]+(:"[[:alnum:]]+")?;)*[is]:[[:digit:]]+(:"[[:alnum:]]+")?;(s:%length%:"%id%"|i:%id%);
+                //    a:     2      : {  i  :     0                        ;  s :     2       :"    10      "  ;   i  :    1                         ; s:   2    :" 11 "        ;
+                //    a:     2      : {  i  :     0                        ; i  :    10                        ;   i  :    1                         ;                   i: 11  ;
+                //    a:     2      : {   s :     1       :"     a      "  ; i  :    10                        ;    s :    1        :"     b      "  ;                   i: 11  ;
+
 				$queryBuilder
 					->andWhere($where)
-					// serialized int value
-					->setParameter('groupPattern1_' . $index, sprintf('%%i:%d;%%', $group))
-					// serialized string value
-					->setParameter('groupPattern2_' . $index, sprintf('%%s:%d:"%d";%%', strlen($group), $group));
+					->setParameter(
+                        'groupPattern_' . $index,
+                        strtr(
+                            '^a:[[:digit:]]+:\{([is]:[[:digit:]]+(:"[[:alnum:]]+")?;[is]:[[:digit:]]+(:"[[:alnum:]]+")?;)*[is]:[[:digit:]]+(:"[[:alnum:]]+")?;(s:%length%:"%id%"|i:%id%);',
+                            array(
+                                '%length%' => strlen($group),
+                                '%id%'     => $group,
+                            )
+                        )
+                    );
 			}
 		}
 
