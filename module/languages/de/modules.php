@@ -11,6 +11,6 @@
  * last-updated: 2014-03-25T14:16:46+01:00
  */
 
-
 $GLOBALS['TL_LANG']['MOD']['avisota-subscription-member']['0'] = 'Avisota - Bestellung für Mitglieder';
+$GLOBALS['TL_LANG']['MOD']['avisota-subscription-member']['1'] = 'Avisota-Abonnements für Contao-Mitglieder';
 
