@@ -29,7 +29,6 @@ use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\LoadDataContainerE
 use ContaoCommunityAlliance\Contao\Bindings\Events\System\LoadLanguageFileEvent;
 use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;
 use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -63,8 +62,7 @@ class EventsSubscriber implements EventSubscriberInterface
 
 	public function getRecipientPropertiesOptions(EnvironmentInterface $environment, $options = array())
 	{
-		/** @var EventDispatcher $eventDispatcher */
-		$eventDispatcher = $GLOBALS['container']['event-dispatcher'];
+		$eventDispatcher = $environment->getEventDispatcher();
 
 		$loadDataContainerEvent = new LoadDataContainerEvent('tl_member');
 		$eventDispatcher->dispatch(ContaoEvents::CONTROLLER_LOAD_DATA_CONTAINER, $loadDataContainerEvent);
