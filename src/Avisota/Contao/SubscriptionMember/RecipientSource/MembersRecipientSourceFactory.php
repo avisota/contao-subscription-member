@@ -19,9 +19,6 @@ use Avisota\Contao\Core\CoreEvents;
 use Avisota\Contao\Core\Event\CreateRecipientSourceEvent;
 use Avisota\Contao\Core\RecipientSource\RecipientSourceFactoryInterface;
 use Avisota\Contao\Entity\RecipientSource;
-use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
-use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\GenerateFrontendUrlEvent;
-use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\GetPageDetailsEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MembersRecipientSourceFactory implements RecipientSourceFactoryInterface
