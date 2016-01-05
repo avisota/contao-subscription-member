@@ -26,70 +26,70 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MembersRecipientSourceFactory implements RecipientSourceFactoryInterface
 {
-	public function createRecipientSource(RecipientSource $recipientSourceEntity)
-	{
-		$recipientSource = new MembersRecipientSource();
+    public function createRecipientSource(RecipientSource $recipientSourceEntity)
+    {
+        $recipientSource = new MembersRecipientSource();
 
-		if ($recipientSourceEntity->getFilter()) {
-			if ($recipientSourceEntity->getMembersUseGroupFilter()) {
-				$recipientSource->setFilteredGroups($recipientSourceEntity->getMembersGroupFilter());
-			}
-			/*
-			if ($recipientSourceEntity->getFilterByMailingLists()) {
-				$recipientSource->setFilteredMailingLists($recipientSourceEntity->getMailingLists()->toArray());
-			}
-			*/
-			if ($recipientSourceEntity->getMembersUsePropertyFilter()) {
-				$recipientSource->setFilteredProperties($recipientSourceEntity->getMembersPropertyFilter());
-			}
-		}
+        if ($recipientSourceEntity->getFilter()) {
+            if ($recipientSourceEntity->getMembersUseGroupFilter()) {
+                $recipientSource->setFilteredGroups($recipientSourceEntity->getMembersGroupFilter());
+            }
+            /*
+            if ($recipientSourceEntity->getFilterByMailingLists()) {
+                $recipientSource->setFilteredMailingLists($recipientSourceEntity->getMailingLists()->toArray());
+            }
+            */
+            if ($recipientSourceEntity->getMembersUsePropertyFilter()) {
+                $recipientSource->setFilteredProperties($recipientSourceEntity->getMembersPropertyFilter());
+            }
+        }
 
-		/** @var EventDispatcherInterface $eventDispatcher */
-		$eventDispatcher = $GLOBALS['container']['event-dispatcher'];
+        /** @var EventDispatcherInterface $eventDispatcher */
+        $eventDispatcher = $GLOBALS['container']['event-dispatcher'];
 
-		/*
-		if ($recipientSourceEntity->getMembersManageSubscriptionPage()) {
-			$getPageDetailsEvent = new GetPageDetailsEvent($recipientSourceEntity->getMembersManageSubscriptionPage());
-			$eventDispatcher->dispatch(ContaoEvents::CONTROLLER_GET_PAGE_DETAILS, $getPageDetailsEvent);
+        /*
+        if ($recipientSourceEntity->getMembersManageSubscriptionPage()) {
+            $getPageDetailsEvent = new GetPageDetailsEvent($recipientSourceEntity->getMembersManageSubscriptionPage());
+            $eventDispatcher->dispatch(ContaoEvents::CONTROLLER_GET_PAGE_DETAILS, $getPageDetailsEvent);
 
-			$generateFrontendUrlEvent = new GenerateFrontendUrlEvent($getPageDetailsEvent->getPageDetails());
-			$eventDispatcher->dispatch(ContaoEvents::CONTROLLER_GENERATE_FRONTEND_URL, $generateFrontendUrlEvent);
+            $generateFrontendUrlEvent = new GenerateFrontendUrlEvent($getPageDetailsEvent->getPageDetails());
+            $eventDispatcher->dispatch(ContaoEvents::CONTROLLER_GENERATE_FRONTEND_URL, $generateFrontendUrlEvent);
 
-			$url = $generateFrontendUrlEvent->getUrl();
-			$url .= (strpos($url, '?') !== false ? '&' : '?') . 'avisota_subscription_email=##email##';
+            $url = $generateFrontendUrlEvent->getUrl();
+            $url .= (strpos($url, '?') !== false ? '&' : '?') . 'avisota_subscription_email=##email##';
 
-			if (!preg_match('~^\w+:~', $url)) {
-				$environment = \Environment::getInstance();
-				$url         = rtrim($environment->base, '/') . '/' . ltrim($url, '/');
-			}
+            if (!preg_match('~^\w+:~', $url)) {
+                $environment = \Environment::getInstance();
+                $url         = rtrim($environment->base, '/') . '/' . ltrim($url, '/');
+            }
 
-			$recipientSource->setManageSubscriptionUrlPattern($url);
-		}
-		*/
+            $recipientSource->setManageSubscriptionUrlPattern($url);
+        }
+        */
 
-		/*
-		if ($recipientSourceEntity->getMembersUnsubscribePage()) {
-			$getPageDetailsEvent = new GetPageDetailsEvent($recipientSourceEntity->getMembersUnsubscribePage());
-			$eventDispatcher->dispatch(ContaoEvents::CONTROLLER_GET_PAGE_DETAILS, $getPageDetailsEvent);
+        /*
+        if ($recipientSourceEntity->getMembersUnsubscribePage()) {
+            $getPageDetailsEvent = new GetPageDetailsEvent($recipientSourceEntity->getMembersUnsubscribePage());
+            $eventDispatcher->dispatch(ContaoEvents::CONTROLLER_GET_PAGE_DETAILS, $getPageDetailsEvent);
 
-			$generateFrontendUrlEvent = new GenerateFrontendUrlEvent($getPageDetailsEvent->getPageDetails());
-			$eventDispatcher->dispatch(ContaoEvents::CONTROLLER_GENERATE_FRONTEND_URL, $generateFrontendUrlEvent);
+            $generateFrontendUrlEvent = new GenerateFrontendUrlEvent($getPageDetailsEvent->getPageDetails());
+            $eventDispatcher->dispatch(ContaoEvents::CONTROLLER_GENERATE_FRONTEND_URL, $generateFrontendUrlEvent);
 
-			$url = $generateFrontendUrlEvent->getUrl();
-			$url .= (strpos($url, '?') !== false ? '&' : '?') . 'avisota_subscription_email=##email##';
+            $url = $generateFrontendUrlEvent->getUrl();
+            $url .= (strpos($url, '?') !== false ? '&' : '?') . 'avisota_subscription_email=##email##';
 
-			if (!preg_match('~^\w+:~', $url)) {
-				$environment = \Environment::getInstance();
-				$url         = rtrim($environment->base, '/') . '/' . ltrim($url, '/');
-			}
+            if (!preg_match('~^\w+:~', $url)) {
+                $environment = \Environment::getInstance();
+                $url         = rtrim($environment->base, '/') . '/' . ltrim($url, '/');
+            }
 
-			$recipientSource->setUnsubscribeUrlPattern($url);
-		}
-		*/
+            $recipientSource->setUnsubscribeUrlPattern($url);
+        }
+        */
 
-		$event = new CreateRecipientSourceEvent($recipientSourceEntity, $recipientSource);
-		$eventDispatcher->dispatch(CoreEvents::CREATE_RECIPIENT_SOURCE, $event);
+        $event = new CreateRecipientSourceEvent($recipientSourceEntity, $recipientSource);
+        $eventDispatcher->dispatch(CoreEvents::CREATE_RECIPIENT_SOURCE, $event);
 
-		return $event->getRecipientSource();
-	}
+        return $event->getRecipientSource();
+    }
 }
