@@ -115,7 +115,7 @@ class MembersRecipientSource implements RecipientSourceInterface
 		$mutableRecipients = array();
 
 		/** @var EventDispatcherInterface $eventDispatcher */
-		$eventDispatcher = $GLOBALS['container']['event-dispatcher'];
+		$eventDispatcher = $container['event-dispatcher'];
 
 		foreach ($stmt as $row) {
 			if ($this->manageSubscriptionUrlPattern) {
