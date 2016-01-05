@@ -42,8 +42,8 @@ use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPr
 use ContaoCommunityAlliance\DcGeneral\DcGeneralEvents;
 use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;
 use ContaoCommunityAlliance\DcGeneral\Event\ActionEvent;
-use ContaoCommunityAlliance\DcGeneral\Event\EventPropagator;
 use ContaoCommunityAlliance\DcGeneral\Factory\DcGeneralFactory;
+use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -59,13 +59,19 @@ class EventsSubscriber implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return array(
-			GetPropertyOptionsEvent::NAME . '[orm_avisota_recipient_source][membersPropertyFilter][membersPropertyFilter_property]' => 'bypassCreateRecipientPropertiesOptions',
+			GetOptionsEvent::NAME => 'bypassCreateRecipientPropertiesOptions',
 			'avisota.subscription-notification-center-bridge.build-tokens-from-recipient'                                           => 'buildRecipientTokens',
 		);
 	}
 
-	public function bypassCreateRecipientPropertiesOptions(GetPropertyOptionsEvent $event)
+	public function bypassCreateRecipientPropertiesOptions(GetOptionsEvent $event)
 	{
+		if ($event->getModel()->getProviderName() === 'orm_avisota_recipient_source'
+			&& !in_array($event->getSubPropertyName(), array('recipientsPropertyFilter_property', 'membersPropertyFilter_property'))
+		) {
+			return;
+		}
+
 		$options = $event->getOptions();
 		$options = $this->getRecipientPropertiesOptions($event->getEnvironment(), $options);
 		$event->setOptions($options);
