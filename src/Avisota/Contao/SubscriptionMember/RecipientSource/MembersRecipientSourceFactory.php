@@ -23,6 +23,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MembersRecipientSourceFactory implements RecipientSourceFactoryInterface
 {
+
+    /**
+     * @param RecipientSource $recipientSourceEntity
+     *
+     * @return mixed
+     * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.LongVariable)
+     */
     public function createRecipientSource(RecipientSource $recipientSourceEntity)
     {
         $recipientSource = new MembersRecipientSource();

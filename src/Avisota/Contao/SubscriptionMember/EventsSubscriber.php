@@ -60,6 +60,10 @@ class EventsSubscriber implements EventSubscriberInterface
         $event->setOptions($options);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.LongVariables)
+     */
     public function getRecipientPropertiesOptions(EnvironmentInterface $environment, $options = array())
     {
         $eventDispatcher = $environment->getEventDispatcher();
@@ -79,6 +83,9 @@ class EventsSubscriber implements EventSubscriberInterface
         return $options;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
     public function buildRecipientTokens(BuildTokensFromRecipientEvent $event)
     {
         $recipient = $event->getRecipient();

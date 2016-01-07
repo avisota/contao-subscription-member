@@ -28,6 +28,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class MembersRecipientSource
+ * @SuppressWarnings(PHPMD.LongVariables)
  */
 class MembersRecipientSource implements RecipientSourceInterface
 {
@@ -84,6 +85,7 @@ class MembersRecipientSource implements RecipientSourceInterface
 
     /**
      * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function getRecipients($limit = null, $offset = null)
     {
