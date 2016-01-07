@@ -175,8 +175,16 @@ class MembersRecipientSource implements RecipientSourceInterface
 
     protected function prepareQuery(QueryBuilder $queryBuilder)
     {
-        $expr = $queryBuilder->expr();
+        $expressionBuilder = $queryBuilder->expr();
 
+        $this->addFilteredGroups($queryBuilder, $expressionBuilder);
+        $this->addFilteredMailingLists($queryBuilder, $expressionBuilder);
+        $this->addFilteredMailingLists($queryBuilder, $expressionBuilder);
+
+    }
+
+    protected function addFilteredGroups(&$queryBuilder, $expressionBuilder)
+    {
         if (count($this->filteredGroups)) {
             foreach ($this->filteredGroups as $index => $filteredGroup) {
                 $condition = $filteredGroup['membersGroupFilter_condition'];
@@ -184,12 +192,12 @@ class MembersRecipientSource implements RecipientSourceInterface
 
                 switch ($condition) {
                     case 'in':
-                        $where = $expr->orX();
+                        $where = $expressionBuilder->orX();
                         $where->add('m.groups REGEXP :groupPattern_' . $index);
                         break;
 
                     case 'not in':
-                        $where = $expr->andX();
+                        $where = $expressionBuilder->andX();
                         $where->add('m.groups NOT REGEXP :groupPattern_' . $index);
                         break;
 
@@ -218,21 +226,27 @@ class MembersRecipientSource implements RecipientSourceInterface
                     );
             }
         }
+    }
 
+    protected function addFilteredMailingLists(&$queryBuilder, $expressionBuilder)
+    {
         if (count($this->filteredMailingLists)) {
             $queryBuilder
                 ->innerJoin('m', 'orm_avisota_subscription', 's', 's.recipientType = :recipientType AND s.recipientId = m.id')
                 ->setParameter('recipientType', 'member');
 
-            $or = $expr->orX();
+            $orExpression = $expressionBuilder->orX();
             foreach ($this->filteredMailingLists as $index => $mailingList) {
-                $or->add($expr->eq('s.mailingList', ':mailingList' . $index));
+                $orExpression->add($expressionBuilder->eq('s.mailingList', ':mailingList' . $index));
                 $queryBuilder->setParameter('mailingList' . $index, $mailingList->getId());
             }
 
-            $queryBuilder->andWhere($or);
+            $queryBuilder->andWhere($orExpression);
         }
+    }
 
+    protected function addFilteredProperties(&$queryBuilder, $expressionBuilder)
+    {
         if (count($this->filteredProperties)) {
             foreach ($this->filteredProperties as $index => $filteredProperty) {
                 $property   = 'm.' . $filteredProperty['membersPropertyFilter_property'];
@@ -242,9 +256,9 @@ class MembersRecipientSource implements RecipientSourceInterface
                 switch ($comparator) {
                     case 'empty':
                         $queryBuilder->andWhere(
-                            $expr->orX(
-                                $expr->eq($property, ':property' . $index),
-                                $expr->isNull($property)
+                            $expressionBuilder->orX(
+                                $expressionBuilder->eq($property, ':property' . $index),
+                                $expressionBuilder->isNull($property)
                             )
                         );
                         $value = '';
@@ -252,44 +266,18 @@ class MembersRecipientSource implements RecipientSourceInterface
 
                     case 'not empty':
                         $queryBuilder->andWhere(
-                            $expr->gt($property, ':property' . $index)
+                            $expressionBuilder->gt($property, ':property' . $index)
                         );
                         $value = '';
                         break;
 
-                    case 'eq':
-                        $queryBuilder->andWhere(
-                            $expr->eq($property, ':property' . $index)
-                        );
-                        break;
+                    default:
+                        if (!method_exists($expressionBuilder, $comparator)) {
+                            continue;
+                        }
 
-                    case 'neq':
                         $queryBuilder->andWhere(
-                            $expr->neq($property, ':property' . $index)
-                        );
-                        break;
-
-                    case 'gt':
-                        $queryBuilder->andWhere(
-                            $expr->gt($property, ':property' . $index)
-                        );
-                        break;
-
-                    case 'gte':
-                        $queryBuilder->andWhere(
-                            $expr->gte($property, ':property' . $index)
-                        );
-                        break;
-
-                    case 'lt':
-                        $queryBuilder->andWhere(
-                            $expr->lt($property, ':property' . $index)
-                        );
-                        break;
-
-                    case 'lte':
-                        $queryBuilder->andWhere(
-                            $expr->lte($property, ':property' . $index)
+                            $expressionBuilder->$comparator($property, ':property' . $index)
                         );
                         break;
                 }
