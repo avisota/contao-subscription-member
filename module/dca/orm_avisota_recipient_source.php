@@ -13,8 +13,8 @@
  * @filesource
  */
 
-use \ContaoCommunityAlliance\DcGeneral\DataDefinition as DataDefinition;
-use \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property as Property;
+use \ContaoCommunityAlliance\DcGeneral\DataDefinition;
+use \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property;
 
 global $TL_DCA,
        $TL_LANG;
