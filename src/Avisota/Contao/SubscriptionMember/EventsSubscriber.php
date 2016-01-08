@@ -101,6 +101,8 @@ class EventsSubscriber implements EventSubscriberInterface
      */
     public function buildRecipientTokens(BuildTokensFromRecipientEvent $event)
     {
+        // TODO evaluate this method
+        /** @noinspection PhpUnusedLocalVariableInspection */
         $recipient = $event->getRecipient();
 
         /*
