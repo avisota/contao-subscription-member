@@ -88,7 +88,7 @@ class MembersRecipientSource implements RecipientSourceInterface
      * @param null $offset
      *
      * @return array
-     * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
     public function getRecipients($limit = null, $offset = null)
     {
