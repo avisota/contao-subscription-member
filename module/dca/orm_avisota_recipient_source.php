@@ -13,7 +13,6 @@
  * @filesource
  */
 
-
 use \ContaoCommunityAlliance\DcGeneral\DataDefinition as DataDefinition;
 use \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property as Property;
 
