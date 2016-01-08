@@ -37,7 +37,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class EventsSubscriber implements EventSubscriberInterface
 {
     /**
-     * {@inheritdoc}
+     * @return array
      */
     public static function getSubscribedEvents()
     {
@@ -49,6 +49,9 @@ class EventsSubscriber implements EventSubscriberInterface
         );
     }
 
+    /**
+     * @param GetOptionsEvent $event
+     */
     public function bypassCreateRecipientPropertiesOptions(GetOptionsEvent $event)
     {
         if ($event->getModel()->getProviderName() === 'orm_avisota_recipient_source'
@@ -66,6 +69,10 @@ class EventsSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * @param EnvironmentInterface $environment
+     * @param array                $options
+     *
+     * @return array
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.LongVariables)
      */
@@ -89,6 +96,7 @@ class EventsSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * @param BuildTokensFromRecipientEvent $event
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function buildRecipientTokens(BuildTokensFromRecipientEvent $event)

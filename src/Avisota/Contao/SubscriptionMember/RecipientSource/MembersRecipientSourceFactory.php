@@ -21,6 +21,11 @@ use Avisota\Contao\Core\RecipientSource\RecipientSourceFactoryInterface;
 use Avisota\Contao\Entity\RecipientSource;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * Class MembersRecipientSourceFactory
+ *
+ * @package Avisota\Contao\SubscriptionMember\RecipientSource
+ */
 class MembersRecipientSourceFactory implements RecipientSourceFactoryInterface
 {
 

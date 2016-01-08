@@ -84,7 +84,10 @@ class MembersRecipientSource implements RecipientSourceInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param null $limit
+     * @param null $offset
+     *
+     * @return array
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function getRecipients($limit = null, $offset = null)
@@ -175,6 +178,9 @@ class MembersRecipientSource implements RecipientSourceInterface
         return $mutableRecipients;
     }
 
+    /**
+     * @param QueryBuilder $queryBuilder
+     */
     protected function prepareQuery(QueryBuilder $queryBuilder)
     {
         $expressionBuilder = $queryBuilder->expr();
@@ -185,6 +191,10 @@ class MembersRecipientSource implements RecipientSourceInterface
 
     }
 
+    /**
+     * @param $queryBuilder
+     * @param $expressionBuilder
+     */
     protected function addFilteredGroups(&$queryBuilder, $expressionBuilder)
     {
         if (!count($this->filteredGroups)) {
@@ -228,6 +238,10 @@ class MembersRecipientSource implements RecipientSourceInterface
         }
     }
 
+    /**
+     * @param $queryBuilder
+     * @param $expressionBuilder
+     */
     protected function addFilteredMailingLists(&$queryBuilder, $expressionBuilder)
     {
         if (!count($this->filteredMailingLists)) {
@@ -252,6 +266,10 @@ class MembersRecipientSource implements RecipientSourceInterface
         $queryBuilder->andWhere($orExpression);
     }
 
+    /**
+     * @param $queryBuilder
+     * @param $expressionBuilder
+     */
     protected function addFilteredProperties(&$queryBuilder, $expressionBuilder)
     {
         if (!count($this->filteredProperties)) {
