@@ -20,8 +20,8 @@ global $TL_LANG;
  * Entity Avisota\Contao:RecipientSource
  */
 $ormAvisotaRecipientSource = array(
-    'members_legend'
-    => 'Members settings',
+    'members_legend' =>
+        'Members settings',
 
     'membersManageSubscriptionPage' => array(
         'Subscription management page',

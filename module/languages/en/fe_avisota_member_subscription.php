@@ -16,26 +16,35 @@
 global $TL_LANG;
 
 $feAvisotaMemberSubscription = array(
-    'subscribe'
-    => 'Subscribe',
-    'unsubscribe'
-    => 'Unsubscribe',
-    'subscribed'
-    => 'Thank you very much, you are now subscribed. Please check your inbox for confirmation email.',
-    'allreadySubscribed'
-    => 'Thank you very much, but you are already subscribed to our newsletter.',
-    'subscribeConfirmation'
-    => 'Your subscription was successfully activated.',
-    'unsubscribed'
-    => 'You\'r now unsubscribed from our newsletter.',
-    'notSubscribed'
-    => 'You\'r not subscribed to our newsletter.',
-    'confirm'
-    => 'confirm subscriptions',
-    'manage_subscription'
-    => 'Manage your subscription',
-    'unsubscribe_direct'
-    => 'Unsubscribe',
+    'subscribe' =>
+        'Subscribe',
+
+    'unsubscribe' =>
+        'Unsubscribe',
+
+    'subscribed' =>
+        'Thank you very much, you are now subscribed. Please check your inbox for confirmation email.',
+
+    'allreadySubscribed' =>
+        'Thank you very much, but you are already subscribed to our newsletter.',
+
+    'subscribeConfirmation' =>
+        'Your subscription was successfully activated.',
+
+    'unsubscribed' =>
+        'You\'r now unsubscribed from our newsletter.',
+
+    'notSubscribed' =>
+        'You\'r not subscribed to our newsletter.',
+
+    'confirm' =>
+        'confirm subscriptions',
+
+    'manage_subscription' =>
+        'Manage your subscription',
+
+    'unsubscribe_direct' =>
+        'Unsubscribe',
 );
 
 $TL_LANG['fe_avisota_member_subscription'] = array_merge(

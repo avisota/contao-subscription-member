@@ -15,8 +15,8 @@
 global $TL_LANG;
 
 $ormAvisotaRecipientSource = array(
-    'members_legend'
-    => 'Configuraziun da commembers',
+    'members_legend' =>
+        'Configuraziun da commembers',
 
     'members' => array(
         'Commembers',
