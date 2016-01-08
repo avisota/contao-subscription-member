@@ -33,7 +33,6 @@ class MembersRecipientSourceFactory implements RecipientSourceFactoryInterface
      * @param RecipientSource $recipientSourceEntity
      *
      * @return mixed
-     * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.LongVariable)
      */
     public function createRecipientSource(RecipientSource $recipientSourceEntity)
@@ -55,7 +54,8 @@ class MembersRecipientSourceFactory implements RecipientSourceFactoryInterface
         }
 
         /** @var EventDispatcherInterface $eventDispatcher */
-        $eventDispatcher = $GLOBALS['container']['event-dispatcher'];
+        global $container;
+        $eventDispatcher = $container['event-dispatcher'];
 
         /*
         if ($recipientSourceEntity->getMembersManageSubscriptionPage()) {

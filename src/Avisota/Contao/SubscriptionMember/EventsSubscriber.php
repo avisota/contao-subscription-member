@@ -73,7 +73,7 @@ class EventsSubscriber implements EventSubscriberInterface
      * @param array                $options
      *
      * @return array
-     * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      * @SuppressWarnings(PHPMD.LongVariables)
      */
     public function getRecipientPropertiesOptions(EnvironmentInterface $environment, $options = array())
@@ -86,7 +86,8 @@ class EventsSubscriber implements EventSubscriberInterface
         $loadLanguageFileEvent = new LoadLanguageFileEvent('tl_member');
         $eventDispatcher->dispatch(ContaoEvents::SYSTEM_LOAD_LANGUAGE_FILE, $loadLanguageFileEvent);
 
-        foreach ($GLOBALS['TL_DCA']['tl_member']['fields'] as $field => $config) {
+        global $TL_DCA;
+        foreach ($TL_DCA['tl_member']['fields'] as $field => $config) {
             $options[$field] = is_array($config['label'])
                 ? $config['label'][0]
                 : $field;
