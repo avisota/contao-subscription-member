@@ -92,7 +92,8 @@ class MembersRecipientSource implements RecipientSourceInterface
      */
     public function getRecipients($limit = null, $offset = null)
     {
-        global $container;
+        global $container,
+               $TL_LANG;
 
         /** @var Connection $connection */
         $connection = $container['doctrine.connection.default'];
@@ -142,7 +143,7 @@ class MembersRecipientSource implements RecipientSourceInterface
                 $row['manage_subscription_link'] = array
                 (
                     'url'  => $url,
-                    'text' => &$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['manage_subscription']
+                    'text' => &$TL_LANG['fe_avisota_member_subscription']['manage_subscription']
                 );
             }
 
@@ -165,7 +166,7 @@ class MembersRecipientSource implements RecipientSourceInterface
                 $row['unsubscribe_link'] = array
                 (
                     'url'  => $url,
-                    'text' => &$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['unsubscribe_direct']
+                    'text' => &$TL_LANG['fe_avisota_member_subscription']['unsubscribe_direct']
                 );
             }
 

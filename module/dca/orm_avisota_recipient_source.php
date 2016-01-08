@@ -16,7 +16,8 @@
 use \ContaoCommunityAlliance\DcGeneral\DataDefinition as DataDefinition;
 use \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property as Property;
 
-global $TL_DCA;
+global $TL_DCA,
+       $TL_LANG;
 
 /**
  * Table orm_avisota_recipient_source
@@ -185,7 +186,7 @@ $fields = array(
     'membersUseGroupFilter' => array
     (
         'label'     =>
-            &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersUseGroupFilter'],
+            &$TL_LANG['orm_avisota_recipient_source']['membersUseGroupFilter'],
         'inputType' => 'checkbox',
         'eval'      => array(
             'submitOnChange' => true,
@@ -197,28 +198,28 @@ $fields = array(
 
     'membersGroupFilter' => array(
         'label'     =>
-            &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter'],
+            &$TL_LANG['orm_avisota_recipient_source']['membersGroupFilter'],
         'inputType' => 'multiColumnWizard',
         'eval'      => array(
             'mandatory'    => true,
             'columnFields' => array(
                 'membersGroupFilter_condition' => array(
                     'label'     =>
-                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_condition'],
+                        &$TL_LANG['orm_avisota_recipient_source']['membersGroupFilter_condition'],
                     'inputType' => 'select',
                     'options'   => array(
                         'in',
                         'not in',
                     ),
                     'reference' =>
-                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_conditions'],
+                        &$TL_LANG['orm_avisota_recipient_source']['membersGroupFilter_conditions'],
                     'eval'      => array(
                         'style' => 'width:60px',
                     ),
                 ),
                 'membersGroupFilter_group'     => array(
                     'label'      =>
-                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_group'],
+                        &$TL_LANG['orm_avisota_recipient_source']['membersGroupFilter_group'],
                     'inputType'  => 'select',
                     'foreignKey' => 'tl_member_group.name',
                     'eval'       => array(
@@ -235,7 +236,7 @@ $fields = array(
 
     'membersUsePropertyFilter' => array(
         'label'     =>
-            &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersUsePropertyFilter'],
+            &$TL_LANG['orm_avisota_recipient_source']['membersUsePropertyFilter'],
         'inputType' => 'checkbox',
         'eval'      => array(
             'submitOnChange' => true,
@@ -247,24 +248,24 @@ $fields = array(
 
     'membersPropertyFilter' => array(
         'label'     =>
-            &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter'],
+            &$TL_LANG['orm_avisota_recipient_source']['membersPropertyFilter'],
         'inputType' => 'multiColumnWizard',
         'eval'      => array(
             'mandatory'    => true,
             'columnFields' => array(
                 'membersPropertyFilter_property'   => array(
                     'label'     =>
-                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_property'],
+                        &$TL_LANG['orm_avisota_recipient_source']['membersPropertyFilter_property'],
                     'inputType' => 'select',
                     'reference' =>
-                        &$GLOBALS['TL_LANG']['orm_avisota_recipient'],
+                        &$TL_LANG['orm_avisota_recipient'],
                     'eval'      => array(
                         'style' => 'width:200px',
                     ),
                 ),
                 'membersPropertyFilter_comparator' => array(
                     'label'     =>
-                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparator'],
+                        &$TL_LANG['orm_avisota_recipient_source']['membersPropertyFilter_comparator'],
                     'inputType' => 'select',
                     'options'   => array(
                         'empty',
@@ -277,14 +278,14 @@ $fields = array(
                         'lte'
                     ),
                     'reference' =>
-                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparators'],
+                        &$TL_LANG['orm_avisota_recipient_source']['membersPropertyFilter_comparators'],
                     'eval'      => array(
                         'style' => 'width:100px',
                     ),
                 ),
                 'membersPropertyFilter_value'      => array(
                     'label'     =>
-                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_value'],
+                        &$TL_LANG['orm_avisota_recipient_source']['membersPropertyFilter_value'],
                     'inputType' => 'text',
                     'eval'      => array(
                         'style' => 'width:200px',
