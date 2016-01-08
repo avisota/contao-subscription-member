@@ -24,12 +24,14 @@ use \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property
 $metaPalettes = array(
     'members' => array(
         'source' => array('title', 'alias', 'type'),
+        // TODO is this using in future
         // 'members' => array('membersManageSubscriptionPage', 'membersUnsubscribePage'),
         'filter' => array(
             'filter',
             'membersUseGroupFilter',
             // 'filterByMailingLists',
             'membersUsePropertyFilter',
+            // TODO evaluate unused parameters
             function (
                 $legendName,
                 DataDefinition\Palette\Legend $legend,
@@ -101,6 +103,7 @@ $metaPalettes = array(
                 $filterByMailingListsProperty->setVisibleCondition($visibleCondition);
             },
             */
+            // TODO evaluate unused parameters
             function (
                 $legendName,
                 DataDefinition\Palette\Legend $legend,
@@ -154,6 +157,7 @@ $GLOBALS['TL_DCA']['orm_avisota_recipient_source']['metasubpalettes'] = array_me
     $metaSubPalettes
 );
 
+// TODO is this using in future
 /*
 $GLOBALS['TL_DCA']['orm_avisota_recipient_source']['fields']['membersManageSubscriptionPage'] = array
 (
