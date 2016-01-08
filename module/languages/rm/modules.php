@@ -11,12 +11,14 @@
  * last-updated: 2014-03-11T16:10:04+01:00
  */
 
+global $TL_LANG;
+
 $ModAvisotaSubscriptionMember = array(
     'Avisota - Abunament per commembers',
     'Abunament dad Avisota per commembers da Contao.',
 );
 
-$GLOBALS['TL_LANG']['MOD']['avisota-subscription-member'] = array_merge(
-    $GLOBALS['TL_LANG']['MOD']['avisota-subscription-member'],
+$TL_LANG['MOD']['avisota-subscription-member'] = array_merge(
+    $TL_LANG['MOD']['avisota-subscription-member'],
     $ModAvisotaSubscriptionMember
 );

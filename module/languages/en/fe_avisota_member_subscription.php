@@ -13,6 +13,8 @@
  * @filesource
  */
 
+global $TL_LANG;
+
 $feAvisotaMemberSubscription = array(
     'subscribe'
     => 'Subscribe',
@@ -36,7 +38,7 @@ $feAvisotaMemberSubscription = array(
     => 'Unsubscribe',
 );
 
-$GLOBALS['TL_LANG']['fe_avisota_member_subscription'] = array_merge(
-    $GLOBALS['TL_LANG']['fe_avisota_member_subscription'],
+$TL_LANG['fe_avisota_member_subscription'] = array_merge(
+    $TL_LANG['fe_avisota_member_subscription'],
     $feAvisotaMemberSubscription
 );

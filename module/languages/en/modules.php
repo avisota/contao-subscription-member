@@ -13,6 +13,7 @@
  * @filesource
  */
 
+global $TL_LANG;
 
 /**
  * Module
@@ -22,7 +23,7 @@ $modAvisotaSubscriptionMember = array(
     'Contao member subscription for Avisota.'
 );
 
-$GLOBALS['TL_LANG']['MOD']['avisota-subscription-member'] = array_merge(
-    $GLOBALS['TL_LANG']['MOD']['avisota-subscription-member'],
+$TL_LANG['MOD']['avisota-subscription-member'] = array_merge(
+    $TL_LANG['MOD']['avisota-subscription-member'],
     $modAvisotaSubscriptionMember
 );

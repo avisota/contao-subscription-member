@@ -11,6 +11,8 @@
  * last-updated: 2014-08-07T04:02:31+02:00
  */
 
+global $TL_LANG;
+
 $ormAvisotaRecipientSource = array(
     'members_legend'
     => 'Mitgliedereinstellungen',
@@ -80,7 +82,7 @@ $ormAvisotaRecipientSource = array(
     ),
 );
 
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source'] = array_merge(
-    $GLOBALS['TL_LANG']['orm_avisota_recipient_source'],
+$TL_LANG['orm_avisota_recipient_source'] = array_merge(
+    $TL_LANG['orm_avisota_recipient_source'],
     $ormAvisotaRecipientSource
 );

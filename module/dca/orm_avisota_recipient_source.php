@@ -17,6 +17,8 @@
 use \ContaoCommunityAlliance\DcGeneral\DataDefinition as DataDefinition;
 use \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property as Property;
 
+global $TL_DCA;
+
 /**
  * Table orm_avisota_recipient_source
  * Entity Avisota\Contao:RecipientSource
@@ -137,8 +139,8 @@ $metaPalettes = array(
     'expert' => array('disable'),
 );
 
-$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['metapalettes'] = array_merge(
-    $GLOBALS['TL_DCA']['orm_avisota_recipient_source']['metapalettes'],
+$TL_DCA['orm_avisota_recipient_source']['metapalettes'] = array_merge(
+    $TL_DCA['orm_avisota_recipient_source']['metapalettes'],
     $metaPalettes
 );
 
@@ -152,8 +154,8 @@ $metaSubPalettes = array(
     ),
 );
 
-$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['metasubpalettes'] = array_merge(
-    $GLOBALS['TL_DCA']['orm_avisota_recipient_source']['metasubpalettes'],
+$TL_DCA['orm_avisota_recipient_source']['metasubpalettes'] = array_merge(
+    $TL_DCA['orm_avisota_recipient_source']['metasubpalettes'],
     $metaSubPalettes
 );
 
@@ -298,7 +300,7 @@ $fields = array(
     ),
 );
 
-$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['fields'] = array_merge(
-    $GLOBALS['TL_DCA']['orm_avisota_recipient_source']['fields'],
+$TL_DCA['orm_avisota_recipient_source']['fields'] = array_merge(
+    $TL_DCA['orm_avisota_recipient_source']['fields'],
     $fields
 );

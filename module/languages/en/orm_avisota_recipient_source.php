@@ -13,6 +13,7 @@
  * @filesource
  */
 
+global $TL_LANG;
 
 /**
  * Table orm_avisota_recipient_source
@@ -94,7 +95,7 @@ $ormAvisotaRecipientSource = array(
     ),
 );
 
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source'] = array_merge(
-    $GLOBALS['TL_LANG']['orm_avisota_recipient_source'],
+$TL_LANG['orm_avisota_recipient_source'] = array_merge(
+    $TL_LANG['orm_avisota_recipient_source'],
     $ormAvisotaRecipientSource
 );

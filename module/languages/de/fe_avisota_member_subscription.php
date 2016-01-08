@@ -11,6 +11,8 @@
  * last-updated: 2014-08-07T04:02:29+02:00
  */
 
+global $TL_LANG;
+
 $feAvisotaMemberSubscription = array
 (
     'allreadySubscribed'
@@ -35,7 +37,7 @@ $feAvisotaMemberSubscription = array
     => 'Sie sind jetzt von unserem Newsletter abgemeldet.',
 );
 
-$GLOBALS['TL_LANG']['fe_avisota_member_subscription'] = array_merge(
-    $GLOBALS['TL_LANG']['fe_avisota_member_subscription'],
+$TL_LANG['fe_avisota_member_subscription'] = array_merge(
+    $TL_LANG['fe_avisota_member_subscription'],
     $feAvisotaMemberSubscription
 );
