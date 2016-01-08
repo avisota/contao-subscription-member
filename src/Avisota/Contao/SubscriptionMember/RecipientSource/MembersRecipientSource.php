@@ -225,9 +225,9 @@ class MembersRecipientSource implements RecipientSourceInterface
                 ->setParameter(
                     'groupPattern_' . $index,
                     strtr(
-                        '^a:[[:digit:]]+:\{([is]:[[:digit:]]+(:"[[:alnum:]]+")?;
-                            [is]:[[:digit:]]+(:"[[:alnum:]]+")?;)*[is]:[[:digit:]]+(:"[[:alnum:]]+")?;
-                            (s:%length%:"%id%"|i:%id%);',
+                        '^a:[[:digit:]]+:\{([is]:[[:digit:]]+(:"[[:alnum:]]+")?;'
+                        . '[is]:[[:digit:]]+(:"[[:alnum:]]+")?;)*[is]:[[:digit:]]+(:"[[:alnum:]]+")?;'
+                        . '(s:%length%:"%id%"|i:%id%);',
                         array
                         (
                             '%length%' => strlen($group),
