@@ -2,12 +2,12 @@
 
 /**
  * Avisota newsletter and mailing system
- * Copyright (C) 2013 Tristan Lins
+ * Copyright (C) 2015 Sven Baumann
  *
  * PHP version 5
  *
- * @copyright  bit3 UG 2013
- * @author     Tristan Lins <tristan.lins@bit3.de>
+ * @copyright  way.vision
+ * @author     Sven Baumann <baumann.sv@gmil.com>
  * @package    avisota/contao-subscription-member
  * @license    LGPL-3.0+
  * @filesource
