@@ -11,7 +11,12 @@
  * last-updated: 2014-03-11T16:10:04+01:00
  */
 
+$ModAvisotaSubscriptionMember = array(
+    'Avisota - Abunament per commembers',
+    'Abunament dad Avisota per commembers da Contao.',
+);
 
-$GLOBALS['TL_LANG']['MOD']['avisota-subscription-member']['0'] = 'Avisota - Abunament per commembers';
-$GLOBALS['TL_LANG']['MOD']['avisota-subscription-member']['1'] = 'Abunament dad Avisota per commembers da Contao.';
-
+$GLOBALS['TL_LANG']['MOD']['avisota-subscription-member'] = array_merge(
+    $GLOBALS['TL_LANG']['MOD']['avisota-subscription-member'],
+    $ModAvisotaSubscriptionMember
+);

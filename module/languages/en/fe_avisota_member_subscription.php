@@ -13,17 +13,30 @@
  * @filesource
  */
 
+$feAvisotaMemberSubscription = array(
+    'subscribe'
+    => 'Subscribe',
+    'unsubscribe'
+    => 'Unsubscribe',
+    'subscribed'
+    => 'Thank you very much, you are now subscribed. Please check your inbox for confirmation email.',
+    'allreadySubscribed'
+    => 'Thank you very much, but you are already subscribed to our newsletter.',
+    'subscribeConfirmation'
+    => 'Your subscription was successfully activated.',
+    'unsubscribed'
+    => 'You\'r now unsubscribed from our newsletter.',
+    'notSubscribed'
+    => 'You\'r not subscribed to our newsletter.',
+    'confirm'
+    => 'confirm subscriptions',
+    'manage_subscription'
+    => 'Manage your subscription',
+    'unsubscribe_direct'
+    => 'Unsubscribe',
+);
 
-$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['subscribe']   = 'Subscribe';
-$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['unsubscribe'] = 'Unsubscribe';
-
-$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['subscribed']            = 'Thank you very much, you are now subscribed. Please check your inbox for confirmation email.';
-$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['allreadySubscribed']    = 'Thank you very much, but you are already subscribed to our newsletter.';
-$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['subscribeConfirmation'] = 'Your subscription was successfully activated.';
-$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['unsubscribed']          = 'You\'r now unsubscribed from our newsletter.';
-$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['notSubscribed']         = 'You\'r not subscribed to our newsletter.';
-
-$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['confirm'] = 'confirm subscriptions';
-
-$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['manage_subscription'] = 'Manage your subscription';
-$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['unsubscribe_direct']  = 'Unsubscribe';
+$GLOBALS['TL_LANG']['fe_avisota_member_subscription'] = array_merge(
+    $GLOBALS['TL_LANG']['fe_avisota_member_subscription'],
+    $feAvisotaMemberSubscription
+);

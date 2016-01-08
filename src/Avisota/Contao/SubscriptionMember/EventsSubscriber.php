@@ -42,15 +42,20 @@ class EventsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            GetOptionsEvent::NAME                                                         => 'bypassCreateRecipientPropertiesOptions',
-            'avisota.subscription-notification-center-bridge.build-tokens-from-recipient' => 'buildRecipientTokens',
+            GetOptionsEvent::NAME
+            => 'bypassCreateRecipientPropertiesOptions',
+            'avisota.subscription-notification-center-bridge.build-tokens-from-recipient'
+            => 'buildRecipientTokens',
         );
     }
 
     public function bypassCreateRecipientPropertiesOptions(GetOptionsEvent $event)
     {
         if ($event->getModel()->getProviderName() === 'orm_avisota_recipient_source'
-            && !in_array($event->getSubPropertyName(), array('recipientsPropertyFilter_property', 'membersPropertyFilter_property'))
+            && !in_array(
+                $event->getSubPropertyName(),
+                array('recipientsPropertyFilter_property', 'membersPropertyFilter_property')
+            )
         ) {
             return;
         }

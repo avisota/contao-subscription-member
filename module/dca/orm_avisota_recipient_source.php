@@ -14,139 +14,144 @@
  */
 
 
+use \ContaoCommunityAlliance\DcGeneral\DataDefinition as DataDefinition;
+use \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property as Property;
+
 /**
  * Table orm_avisota_recipient_source
  * Entity Avisota\Contao:RecipientSource
  */
-$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['metapalettes']['members'] = array
-(
-    'source' => array('title', 'alias', 'type'),
-    // 'members' => array('membersManageSubscriptionPage', 'membersUnsubscribePage'),
-    'filter' => array
-    (
-        'filter',
-        'membersUseGroupFilter',
-        // 'filterByMailingLists',
-        'membersUsePropertyFilter',
-        function (
-            $legendName,
-            \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Legend $legend,
-            \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Palette $palette,
-            \ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\PalettesDefinitionInterface $palettesDefinition
-        ) {
-            $membersUseGroupFilterProperty = $legend->getProperty('membersUseGroupFilter');
-            $visibleCondition              = $membersUseGroupFilterProperty->getVisibleCondition();
-
-            $typeCondition   = new \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyValueCondition(
-                'type', 'members'
-            );
-            $filterCondition = new \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyTrueCondition(
-                'filter'
-            );
-
-            /** @var \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionInterface|\ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain $visibleCondition */
-            if (
-                !$visibleCondition
-                || !$visibleCondition instanceof \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain
-                || $visibleCondition->getConjunction()
-                   != \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain::OR_CONJUNCTION
+$metaPalettes = array(
+    'members' => array(
+        'source' => array('title', 'alias', 'type'),
+        // 'members' => array('membersManageSubscriptionPage', 'membersUnsubscribePage'),
+        'filter' => array(
+            'filter',
+            'membersUseGroupFilter',
+            // 'filterByMailingLists',
+            'membersUsePropertyFilter',
+            function (
+                $legendName,
+                DataDefinition\Palette\Legend $legend,
+                DataDefinition\Palette\Palette $palette,
+                DataDefinition\Definition\PalettesDefinitionInterface $palettesDefinition
             ) {
-                $visibleCondition = new \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain(
-                    $visibleCondition ? array($visibleCondition) : array(),
-                    \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain::OR_CONJUNCTION
+                $membersUseGroupFilterProperty = $legend->getProperty('membersUseGroupFilter');
+                $visibleCondition              = $membersUseGroupFilterProperty->getVisibleCondition();
+
+                $typeCondition   = new Property\PropertyValueCondition('type', 'members');
+                $filterCondition = new Property\PropertyTrueCondition('filter');
+
+                /** @var Property\PropertyConditionInterface|Property\PropertyConditionChain $visibleCondition */
+                if (!$visibleCondition
+                    || !$visibleCondition instanceof Property\PropertyConditionChain
+                    || $visibleCondition->getConjunction()
+                       != Property\PropertyConditionChain::OR_CONJUNCTION
+                ) {
+                    $visibleCondition = new Property\PropertyConditionChain(
+                        $visibleCondition ? array($visibleCondition) : array(),
+                        Property\PropertyConditionChain::OR_CONJUNCTION
+                    );
+                }
+
+                $visibleCondition->addCondition(
+                    new Property\PropertyConditionChain(
+                        array($typeCondition, $filterCondition)
+                    )
                 );
-            }
 
-            $visibleCondition->addCondition(
-                new \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain(
-                    array($typeCondition, $filterCondition)
-                )
-            );
-
-            $membersUseGroupFilterProperty->setVisibleCondition($visibleCondition);
-        },
-        /*
-        function (
-            $legendName,
-            \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Legend $legend,
-            \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Palette $palette,
-            \ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\PalettesDefinitionInterface $palettesDefinition
-        ) {
-            $filterByMailingListsProperty = $legend->getProperty('filterByMailingLists');
-            $visibleCondition             = $filterByMailingListsProperty->getVisibleCondition();
-
-            $typeCondition   = new \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyValueCondition(
-                'type', 'members'
-            );
-            $filterCondition = new \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyTrueCondition(
-                'filter'
-            );
-
-            /** @var \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionInterface|\ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain $visibleCondition * /
-            if (
-                !$visibleCondition ||
-                !$visibleCondition instanceof \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain ||
-                $visibleCondition->getConjunction(
-                ) != \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain::OR_CONJUNCTION
+                $membersUseGroupFilterProperty->setVisibleCondition($visibleCondition);
+            },
+            /*
+            function (
+                $legendName,
+                DataDefinition\Palette\Legend $legend,
+                DataDefinition\Palette\Palette $palette,
+                DataDefinition\Definition\PalettesDefinitionInterface $palettesDefinition
             ) {
-                $visibleCondition = new \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain(
-                    $visibleCondition ? array($visibleCondition) : array(),
-                    \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain::OR_CONJUNCTION
+                $filterByMailingListsProperty = $legend->getProperty('filterByMailingLists');
+                $visibleCondition             = $filterByMailingListsProperty->getVisibleCondition();
+
+                $typeCondition   = new Property\PropertyValueCondition(
+                    'type', 'members'
                 );
-            }
+                $filterCondition = new Property\PropertyTrueCondition(
+                    'filter'
+                );
 
-            $visibleCondition->addCondition(
-                new \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain(
-                    array($typeCondition, $filterCondition)
-                )
-            );
+                /** @var Property\PropertyConditionInterface|Property\PropertyConditionChain $visibleCondition * /
+                if (
+                    !$visibleCondition ||
+                    !$visibleCondition instanceof DataDefinition\Palette\Condition\Property\PropertyConditionChain ||
+                    $visibleCondition->getConjunction(
+                    ) != Property\PropertyConditionChain::OR_CONJUNCTION
+                ) {
+                    $visibleCondition = new Property\PropertyConditionChain(
+                        $visibleCondition ? array($visibleCondition) : array(),
+                        Property\PropertyConditionChain::OR_CONJUNCTION
+                    );
+                }
 
-            $filterByMailingListsProperty->setVisibleCondition($visibleCondition);
-        },
-        */
-        function (
-            $legendName,
-            \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Legend $legend,
-            \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Palette $palette,
-            \ContaoCommunityAlliance\DcGeneral\DataDefinition\Definition\PalettesDefinitionInterface $palettesDefinition
-        ) {
-            $membersUsePropertyFilterProperty = $legend->getProperty('membersUsePropertyFilter');
-            $visibleCondition                 = $membersUsePropertyFilterProperty->getVisibleCondition();
+                $visibleCondition->addCondition(
+                    new Property\PropertyConditionChain(
+                        array($typeCondition, $filterCondition)
+                    )
+                );
 
-            $typeCondition   = new \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyValueCondition(
-                'type', 'members'
-            );
-            $filterCondition = new \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyTrueCondition(
-                'filter'
-            );
-
-            /** @var \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionInterface|\ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain $visibleCondition */
-            if (
-                !$visibleCondition
-                || !$visibleCondition instanceof \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain
-                || $visibleCondition->getConjunction() != \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain::AND_CONJUNCTION
+                $filterByMailingListsProperty->setVisibleCondition($visibleCondition);
+            },
+            */
+            function (
+                $legendName,
+                DataDefinition\Palette\Legend $legend,
+                DataDefinition\Palette\Palette $palette,
+                DataDefinition\Definition\PalettesDefinitionInterface $palettesDefinition
             ) {
-                $visibleCondition = new \ContaoCommunityAlliance\DcGeneral\DataDefinition\Palette\Condition\Property\PropertyConditionChain(
-                    $visibleCondition ? array($visibleCondition) : array()
-                );
-            }
+                $membersUsePropertyFilterProperty = $legend->getProperty('membersUsePropertyFilter');
+                $visibleCondition                 = $membersUsePropertyFilterProperty->getVisibleCondition();
 
-            $visibleCondition->addCondition($typeCondition);
-            $visibleCondition->addCondition($filterCondition);
+                $typeCondition   = new Property\PropertyValueCondition('type', 'members');
+                $filterCondition = new Property\PropertyTrueCondition('filter');
 
-            $membersUsePropertyFilterProperty->setVisibleCondition($visibleCondition);
-        },
+                /** @var Property\PropertyConditionInterface|Property\PropertyConditionChain $visibleCondition */
+                if (!$visibleCondition
+                    || !$visibleCondition instanceof Property\PropertyConditionChain
+                    || $visibleCondition->getConjunction() != Property\PropertyConditionChain::AND_CONJUNCTION
+                ) {
+                    $visibleCondition = new Property\PropertyConditionChain(
+                        $visibleCondition ? array($visibleCondition) : array()
+                    );
+                }
+
+                $visibleCondition->addCondition($typeCondition);
+                $visibleCondition->addCondition($filterCondition);
+
+                $membersUsePropertyFilterProperty->setVisibleCondition($visibleCondition);
+            },
+        ),
     ),
+
     'expert' => array('disable'),
 );
 
-$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['metasubpalettes']['membersUsePropertyFilter'] = array
-(
-    'membersPropertyFilter',
+$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['metapalettes'] = array_merge(
+    $GLOBALS['TL_DCA']['orm_avisota_recipient_source']['metapalettes'],
+    $metaPalettes
 );
-$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['metasubpalettes']['membersUseGroupFilter']    = array
-(
-    'membersGroupFilter',
+
+$metaSubPalettes = array(
+    'membersUsePropertyFilter' => array(
+        'membersPropertyFilter',
+    ),
+
+    'membersUseGroupFilter' => array(
+        'membersGroupFilter',
+    ),
+);
+
+$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['metasubpalettes'] = array_merge(
+    $GLOBALS['TL_DCA']['orm_avisota_recipient_source']['metasubpalettes'],
+    $metaSubPalettes
 );
 
 /*
@@ -171,110 +176,125 @@ $GLOBALS['TL_DCA']['orm_avisota_recipient_source']['fields']['membersUnsubscribe
 );
 */
 
-$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['fields']['membersUseGroupFilter'] = array
-(
-    'label'     => &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersUseGroupFilter'],
-    'inputType' => 'checkbox',
-    'eval'      => array
+$fields = array(
+    'membersUseGroupFilter' => array
     (
-        'submitOnChange' => true,
+        'label'     =>
+            &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersUseGroupFilter'],
+        'inputType' => 'checkbox',
+        'eval'      => array(
+            'submitOnChange' => true,
+        ),
+        'field'     => array(
+            'nullable' => true,
+        ),
     ),
-    'field'     => array
-    (
-        'nullable' => true,
-    ),
-);
 
-$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['fields']['membersGroupFilter'] = array
-(
-    'label'     => &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter'],
-    'inputType' => 'multiColumnWizard',
-    'eval'      => array
-    (
-        'mandatory'    => true,
-        'columnFields' => array(
-            'membersGroupFilter_condition' => array
-            (
-                'label'     => &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_condition'],
-                'inputType' => 'select',
-                'options'   => array('in', 'not in'),
-                'reference' => &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_conditions'],
-                'eval'      => array(
-                    'style' => 'width:60px'
+    'membersGroupFilter' => array(
+        'label'     =>
+            &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter'],
+        'inputType' => 'multiColumnWizard',
+        'eval'      => array(
+            'mandatory'    => true,
+            'columnFields' => array(
+                'membersGroupFilter_condition' => array(
+                    'label'     =>
+                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_condition'],
+                    'inputType' => 'select',
+                    'options'   => array(
+                        'in',
+                        'not in',
+                    ),
+                    'reference' =>
+                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_conditions'],
+                    'eval'      => array(
+                        'style' => 'width:60px',
+                    ),
                 ),
-            ),
-            'membersGroupFilter_group'     => array
-            (
-                'label'      => &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_group'],
-                'inputType'  => 'select',
-                'foreignKey' => 'tl_member_group.name',
-                'eval'       => array(
-                    'style' => 'width:340px'
+                'membersGroupFilter_group'     => array(
+                    'label'      =>
+                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_group'],
+                    'inputType'  => 'select',
+                    'foreignKey' => 'tl_member_group.name',
+                    'eval'       => array(
+                        'style' => 'width:340px',
+                    ),
                 ),
             ),
         ),
+        'field'     => array(
+            'type'     => 'json_array',
+            'nullable' => true,
+        ),
     ),
-    'field'     => array
-    (
-        'type'     => 'json_array',
-        'nullable' => true,
-    ),
-);
 
-$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['fields']['membersUsePropertyFilter'] = array
-(
-    'label'     => &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersUsePropertyFilter'],
-    'inputType' => 'checkbox',
-    'eval'      => array
-    (
-        'submitOnChange' => true,
+    'membersUsePropertyFilter' => array(
+        'label'     =>
+            &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersUsePropertyFilter'],
+        'inputType' => 'checkbox',
+        'eval'      => array(
+            'submitOnChange' => true,
+        ),
+        'field'     => array(
+            'nullable' => true,
+        ),
     ),
-    'field'     => array
-    (
-        'nullable' => true,
-    ),
-);
 
-$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['fields']['membersPropertyFilter'] = array
-(
-    'label'     => &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter'],
-    'inputType' => 'multiColumnWizard',
-    'eval'      => array
-    (
-        'mandatory'    => true,
-        'columnFields' => array(
-            'membersPropertyFilter_property'   => array
-            (
-                'label'     => &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_property'],
-                'inputType' => 'select',
-                'reference' => &$GLOBALS['TL_LANG']['orm_avisota_recipient'],
-                'eval'      => array(
-                    'style' => 'width:200px'
+    'membersPropertyFilter' => array(
+        'label'     =>
+            &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter'],
+        'inputType' => 'multiColumnWizard',
+        'eval'      => array(
+            'mandatory'    => true,
+            'columnFields' => array(
+                'membersPropertyFilter_property'   => array(
+                    'label'     =>
+                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_property'],
+                    'inputType' => 'select',
+                    'reference' =>
+                        &$GLOBALS['TL_LANG']['orm_avisota_recipient'],
+                    'eval'      => array(
+                        'style' => 'width:200px',
+                    ),
                 ),
-            ),
-            'membersPropertyFilter_comparator' => array
-            (
-                'label'     => &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparator'],
-                'inputType' => 'select',
-                'options'   => array('empty', 'not empty', 'eq', 'neq', 'gt', 'gte', 'lt', 'lte'),
-                'reference' => &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparators'],
-                'eval'      => array(
-                    'style' => 'width:100px'
+                'membersPropertyFilter_comparator' => array(
+                    'label'     =>
+                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparator'],
+                    'inputType' => 'select',
+                    'options'   => array(
+                        'empty',
+                        'not empty',
+                        'eq',
+                        'neq',
+                        'gt',
+                        'gte',
+                        'lt',
+                        'lte'
+                    ),
+                    'reference' =>
+                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparators'],
+                    'eval'      => array(
+                        'style' => 'width:100px',
+                    ),
                 ),
-            ),
-            'membersPropertyFilter_value'      => array
-            (
-                'label'     => &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_value'],
-                'inputType' => 'text',
-                'eval'      => array(
-                    'style' => 'width:200px'
+                'membersPropertyFilter_value'      => array(
+                    'label'     =>
+                        &$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_value'],
+                    'inputType' => 'text',
+                    'eval'      => array(
+                        'style' => 'width:200px',
+                    ),
                 ),
             ),
         ),
+        'field'     => array(
+            'type'     => 'json_array',
+            'nullable' => true,
+        ),
     ),
-    'field'     => array
-    (
-        'type'     => 'json_array',
-        'nullable' => true,
-    ),
+);
+
+$GLOBALS['TL_DCA']['orm_avisota_recipient_source']['fields'] = array_merge(
+    $GLOBALS['TL_DCA']['orm_avisota_recipient_source']['fields'],
+    $fields
 );

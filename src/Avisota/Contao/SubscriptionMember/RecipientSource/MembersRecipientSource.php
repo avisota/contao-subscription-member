@@ -187,108 +187,115 @@ class MembersRecipientSource implements RecipientSourceInterface
 
     protected function addFilteredGroups(&$queryBuilder, $expressionBuilder)
     {
-        if (count($this->filteredGroups)) {
-            foreach ($this->filteredGroups as $index => $filteredGroup) {
-                $condition = $filteredGroup['membersGroupFilter_condition'];
-                $group     = $filteredGroup['membersGroupFilter_group'];
+        if (!count($this->filteredGroups)) {
+            return;
+        }
 
-                switch ($condition) {
-                    case 'in':
-                        $where = $expressionBuilder->orX();
-                        $where->add('m.groups REGEXP :groupPattern_' . $index);
-                        break;
+        foreach ($this->filteredGroups as $index => $filteredGroup) {
+            $condition = $filteredGroup['membersGroupFilter_condition'];
+            $group     = $filteredGroup['membersGroupFilter_group'];
 
-                    case 'not in':
-                        $where = $expressionBuilder->andX();
-                        $where->add('m.groups NOT REGEXP :groupPattern_' . $index);
-                        break;
+            switch ($condition) {
+                case 'in':
+                    $where = $expressionBuilder->orX();
+                    $where->add('m.groups REGEXP :groupPattern_' . $index);
+                    break;
 
-                    default:
-                        continue 2;
-                }
+                case 'not in':
+                    $where = $expressionBuilder->andX();
+                    $where->add('m.groups NOT REGEXP :groupPattern_' . $index);
+                    break;
 
-                // The REGEXP pattern:
-                //   ^a:[[:digit:]]+:\{([is]:[[:digit:]]+(:"[[:alnum:]]+")?;[is]:[[:digit:]]+(:"[[:alnum:]]+")?;)*[is]:[[:digit:]]+(:"[[:alnum:]]+")?;(s:%length%:"%id%"|i:%id%);
-                //    a:     2      : {  i  :     0                        ;  s :     2       :"    10      "  ;   i  :    1                         ; s:   2    :" 11 "        ;
-                //    a:     2      : {  i  :     0                        ; i  :    10                        ;   i  :    1                         ;                   i: 11  ;
-                //    a:     2      : {   s :     1       :"     a      "  ; i  :    10                        ;    s :    1        :"     b      "  ;                   i: 11  ;
-
-                $queryBuilder
-                    ->andWhere($where)
-                    ->setParameter(
-                        'groupPattern_' . $index,
-                        strtr(
-                            '^a:[[:digit:]]+:\{([is]:[[:digit:]]+(:"[[:alnum:]]+")?;[is]:[[:digit:]]+(:"[[:alnum:]]+")?;)*[is]:[[:digit:]]+(:"[[:alnum:]]+")?;(s:%length%:"%id%"|i:%id%);',
-                            array
-                            (
-                                '%length%' => strlen($group),
-                                '%id%'     => $group,
-                            )
-                        )
-                    );
+                default:
+                    continue 2;
             }
+
+            $queryBuilder
+                ->andWhere($where)
+                ->setParameter(
+                    'groupPattern_' . $index,
+                    strtr(
+                        '^a:[[:digit:]]+:\{([is]:[[:digit:]]+(:"[[:alnum:]]+")?;
+                            [is]:[[:digit:]]+(:"[[:alnum:]]+")?;)*[is]:[[:digit:]]+(:"[[:alnum:]]+")?;
+                            (s:%length%:"%id%"|i:%id%);',
+                        array
+                        (
+                            '%length%' => strlen($group),
+                            '%id%'     => $group,
+                        )
+                    )
+                );
         }
     }
 
     protected function addFilteredMailingLists(&$queryBuilder, $expressionBuilder)
     {
-        if (count($this->filteredMailingLists)) {
-            $queryBuilder
-                ->innerJoin('m', 'orm_avisota_subscription', 's', 's.recipientType = :recipientType AND s.recipientId = m.id')
-                ->setParameter('recipientType', 'member');
-
-            $orExpression = $expressionBuilder->orX();
-            foreach ($this->filteredMailingLists as $index => $mailingList) {
-                $orExpression->add($expressionBuilder->eq('s.mailingList', ':mailingList' . $index));
-                $queryBuilder->setParameter('mailingList' . $index, $mailingList->getId());
-            }
-
-            $queryBuilder->andWhere($orExpression);
+        if (!count($this->filteredMailingLists)) {
+            return;
         }
+
+        $queryBuilder
+            ->innerJoin(
+                'm',
+                'orm_avisota_subscription',
+                's',
+                's.recipientType = :recipientType AND s.recipientId = m.id'
+            );
+        $queryBuilder->setParameter('recipientType', 'member');
+
+        $orExpression = $expressionBuilder->orX();
+        foreach ($this->filteredMailingLists as $index => $mailingList) {
+            $orExpression->add($expressionBuilder->eq('s.mailingList', ':mailingList' . $index));
+            $queryBuilder->setParameter('mailingList' . $index, $mailingList->getId());
+        }
+
+        $queryBuilder->andWhere($orExpression);
     }
 
     protected function addFilteredProperties(&$queryBuilder, $expressionBuilder)
     {
-        if (count($this->filteredProperties)) {
-            foreach ($this->filteredProperties as $index => $filteredProperty) {
-                $property   = 'm.' . $filteredProperty['membersPropertyFilter_property'];
-                $comparator = $filteredProperty['membersPropertyFilter_comparator'];
-                $value      = $filteredProperty['membersPropertyFilter_value'];
+        if (!count($this->filteredProperties)) {
+            return;
+        }
 
-                switch ($comparator) {
-                    case 'empty':
-                        $queryBuilder->andWhere(
-                            $expressionBuilder->orX(
-                                $expressionBuilder->eq($property, ':property' . $index),
-                                $expressionBuilder->isNull($property)
-                            )
-                        );
-                        $value = '';
-                        break;
+        foreach ($this->filteredProperties as $index => $filteredProperty) {
+            $property   = 'm.' . $filteredProperty['membersPropertyFilter_property'];
+            $comparator = $filteredProperty['membersPropertyFilter_comparator'];
+            $value      = $filteredProperty['membersPropertyFilter_value'];
 
-                    case 'not empty':
-                        $queryBuilder->andWhere(
-                            $expressionBuilder->gt($property, ':property' . $index)
-                        );
-                        $value = '';
-                        break;
+            switch ($comparator) {
+                case 'empty':
+                    $queryBuilder->andWhere(
+                        $expressionBuilder->orX(
+                            $expressionBuilder->eq($property, ':property' . $index),
+                            $expressionBuilder->isNull($property)
+                        )
+                    );
+                    $value = '';
+                    break;
 
-                    default:
-                        if (!method_exists($expressionBuilder, $comparator)) {
-                            continue;
-                        }
+                case 'not empty':
+                    $queryBuilder->andWhere(
+                        $expressionBuilder->gt($property, ':property' . $index)
+                    );
+                    $value = '';
+                    break;
 
-                        $queryBuilder->andWhere(
-                            $expressionBuilder->$comparator($property, ':property' . $index)
-                        );
-                        break;
-                }
+                default:
+                    if (!method_exists($expressionBuilder, $comparator)) {
+                        continue;
+                    }
 
-                $queryBuilder->setParameter(
-                    ':property' . $index,
-                    $value
-                );
+                    $queryBuilder->andWhere(
+                        $expressionBuilder->$comparator($property, ':property' . $index)
+                    );
+                    break;
             }
+
+            $queryBuilder->setParameter(
+                ':property' . $index,
+                $value
+            );
         }
     }
 
@@ -300,6 +307,7 @@ class MembersRecipientSource implements RecipientSourceInterface
     public function setFilteredGroups(array $filteredGroups)
     {
         $this->filteredGroups = $filteredGroups;
+
         return $this;
     }
 
@@ -327,6 +335,7 @@ class MembersRecipientSource implements RecipientSourceInterface
     public function setFilteredMailingLists(array $filteredMailingLists)
     {
         $this->filteredMailingLists = array_values($filteredMailingLists);
+
         return $this;
     }
 
@@ -346,6 +355,7 @@ class MembersRecipientSource implements RecipientSourceInterface
     public function setFilteredProperties(array $filteredProperties)
     {
         $this->filteredProperties = $filteredProperties;
+
         return $this;
     }
 
@@ -364,7 +374,9 @@ class MembersRecipientSource implements RecipientSourceInterface
      */
     public function setManageSubscriptionUrlPattern($manageSubscriptionUrlPattern)
     {
-        $this->manageSubscriptionUrlPattern = empty($manageSubscriptionUrlPattern) ? null : (string) $manageSubscriptionUrlPattern;
+        $this->manageSubscriptionUrlPattern =
+            empty($manageSubscriptionUrlPattern) ? null : (string) $manageSubscriptionUrlPattern;
+
         return $this;
     }
 
@@ -383,7 +395,9 @@ class MembersRecipientSource implements RecipientSourceInterface
      */
     public function setUnsubscribeUrlPattern($unsubscribeUrlPattern)
     {
-        $this->unsubscribeUrlPattern = empty($unsubscribeUrlPattern) ? null : (string) $unsubscribeUrlPattern;
+        $this->unsubscribeUrlPattern =
+            empty($unsubscribeUrlPattern) ? null : (string) $unsubscribeUrlPattern;
+
         return $this;
     }
 }

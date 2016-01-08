@@ -17,7 +17,8 @@
 /**
  * Recipient sources
  */
-$GLOBALS['AVISOTA_RECIPIENT_SOURCE']['members'] = 'Avisota\Contao\SubscriptionMember\RecipientSource\MembersRecipientSourceFactory';
+$GLOBALS['AVISOTA_RECIPIENT_SOURCE']['members'] =
+    'Avisota\Contao\SubscriptionMember\RecipientSource\MembersRecipientSourceFactory';
 
 /**
  * Event subscribers
