@@ -14,12 +14,14 @@
 
 global $TL_LANG;
 
-$ModAvisotaSubscriptionMember = array(
-    'Avisota - Abunament per commembers',
-    'Abunament dad Avisota per commembers da Contao.',
+$MOD = array(
+    'avisota-subscription-member' => array(
+        'Avisota - Abunament per commembers',
+        'Abunament dad Avisota per commembers da Contao.',
+    ),
 );
 
-$TL_LANG['MOD']['avisota-subscription-member'] = array_merge(
-    $TL_LANG['MOD']['avisota-subscription-member'],
-    $ModAvisotaSubscriptionMember
+$TL_LANG['MOD'] = array_merge(
+    $TL_LANG['MOD'],
+    $MOD
 );
