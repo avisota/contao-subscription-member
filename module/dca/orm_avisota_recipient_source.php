@@ -134,9 +134,8 @@ $metaPalettes = array(
                 $membersUsePropertyFilterProperty->setVisibleCondition($visibleCondition);
             },
         ),
+        'expert' => array('disable'),
     ),
-
-    'expert' => array('disable'),
 );
 
 $TL_DCA['orm_avisota_recipient_source']['metapalettes'] = array_merge(
