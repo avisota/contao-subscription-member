@@ -77,6 +77,9 @@ class EventsSubscriber implements EventSubscriberInterface
      */
     public function getRecipientPropertiesOptions(EnvironmentInterface $environment, $options = array())
     {
+        if (!is_array($options)) {
+            $options = (array) $options;
+        }
         $eventDispatcher = $environment->getEventDispatcher();
 
         $loadDataContainerEvent = new LoadDataContainerEvent('tl_member');
