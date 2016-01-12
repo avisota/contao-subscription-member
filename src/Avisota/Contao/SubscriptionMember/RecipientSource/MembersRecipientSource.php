@@ -25,6 +25,7 @@ use Doctrine\DBAL\Driver\PDOStatement;
 use Doctrine\DBAL\Query\Expression\ExpressionBuilder;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Statement;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class MembersRecipientSource

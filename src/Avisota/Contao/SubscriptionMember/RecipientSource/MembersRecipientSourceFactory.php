@@ -19,6 +19,7 @@ use Avisota\Contao\Core\CoreEvents;
 use Avisota\Contao\Core\Event\CreateRecipientSourceEvent;
 use Avisota\Contao\Core\RecipientSource\RecipientSourceFactoryInterface;
 use Avisota\Contao\Entity\RecipientSource;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
 /**
