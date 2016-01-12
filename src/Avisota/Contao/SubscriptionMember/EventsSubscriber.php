@@ -17,8 +17,6 @@ namespace Avisota\Contao\SubscriptionMember;
 
 
 use Avisota\Contao\SubscriptionNotificationCenterBridge\Event\BuildTokensFromRecipientEvent;
-
-
 use Avisota\Contao\SubscriptionNotificationCenterBridge\SubscriptionNotificationCenterBridgeEvents;
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\LoadDataContainerEvent;

@@ -26,7 +26,6 @@ use Doctrine\DBAL\Query\Expression\ExpressionBuilder;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Statement;
 
-
 /**
  * Class MembersRecipientSource
  * @SuppressWarnings(PHPMD.LongVariables)
