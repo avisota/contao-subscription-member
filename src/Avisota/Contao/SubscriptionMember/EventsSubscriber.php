@@ -15,21 +15,16 @@
 
 namespace Avisota\Contao\SubscriptionMember;
 
-use Avisota\Contao\Core\DataContainer\OptionsBuilder;
-use Avisota\Contao\Subscription\Event\PrepareSubscriptionEvent;
-use Avisota\Contao\Subscription\Event\ResolveRecipientEvent;
-use Avisota\Contao\Subscription\Event\SubscriptionAwareEvent;
-use Avisota\Contao\Subscription\SubscriptionEvents;
-use Avisota\Contao\Subscription\SubscriptionManager;
+
 use Avisota\Contao\SubscriptionNotificationCenterBridge\Event\BuildTokensFromRecipientEvent;
-use Avisota\Contao\SubscriptionRecipient\Event\ExportRecipientPropertyEvent;
-use Avisota\Contao\SubscriptionRecipient\Event\MigrateRecipientEvent;
+
+
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\LoadDataContainerEvent;
 use ContaoCommunityAlliance\Contao\Bindings\Events\System\LoadLanguageFileEvent;
 use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;
 use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 
 /**
  * Class EventsSubscriber
