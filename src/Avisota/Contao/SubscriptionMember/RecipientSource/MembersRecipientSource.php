@@ -22,9 +22,10 @@ use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\System\LoadLanguageFileEvent;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\PDOStatement;
+use Doctrine\DBAL\Query\Expression\ExpressionBuilder;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Statement;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 
 /**
  * Class MembersRecipientSource
@@ -196,7 +197,7 @@ class MembersRecipientSource implements RecipientSourceInterface
      * @param $queryBuilder
      * @param $expressionBuilder
      */
-    protected function addFilteredGroups(&$queryBuilder, $expressionBuilder)
+    protected function addFilteredGroups(QueryBuilder &$queryBuilder, ExpressionBuilder $expressionBuilder)
     {
         if (!count($this->filteredGroups)) {
             return;
@@ -243,7 +244,7 @@ class MembersRecipientSource implements RecipientSourceInterface
      * @param $queryBuilder
      * @param $expressionBuilder
      */
-    protected function addFilteredMailingLists(&$queryBuilder, $expressionBuilder)
+    protected function addFilteredMailingLists(QueryBuilder &$queryBuilder, ExpressionBuilder $expressionBuilder)
     {
         if (!count($this->filteredMailingLists)) {
             return;
@@ -271,7 +272,7 @@ class MembersRecipientSource implements RecipientSourceInterface
      * @param $queryBuilder
      * @param $expressionBuilder
      */
-    protected function addFilteredProperties(&$queryBuilder, $expressionBuilder)
+    protected function addFilteredProperties(QueryBuilder &$queryBuilder, ExpressionBuilder $expressionBuilder)
     {
         if (!count($this->filteredProperties)) {
             return;
