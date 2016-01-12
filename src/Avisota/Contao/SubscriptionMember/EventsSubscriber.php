@@ -19,11 +19,13 @@ namespace Avisota\Contao\SubscriptionMember;
 use Avisota\Contao\SubscriptionNotificationCenterBridge\Event\BuildTokensFromRecipientEvent;
 
 
+use Avisota\Contao\SubscriptionNotificationCenterBridge\SubscriptionNotificationCenterBridgeEvents;
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\LoadDataContainerEvent;
 use ContaoCommunityAlliance\Contao\Bindings\Events\System\LoadLanguageFileEvent;
 use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;
 use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 
 /**
@@ -37,11 +39,13 @@ class EventsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            GetOptionsEvent::NAME =>
-                'bypassCreateRecipientPropertiesOptions',
+            GetOptionsEvent::NAME => array(
+                array('bypassCreateRecipientPropertiesOptions'),
+            ),
 
-            'avisota.subscription-notification-center-bridge.build-tokens-from-recipient' =>
-                'buildRecipientTokens',
+            SubscriptionNotificationCenterBridgeEvents::BUILD_TOKENS_FROM_RECIPIENT => array(
+                array('buildRecipientTokens'),
+            ),
         );
     }
 
