@@ -15,7 +15,6 @@
 
 namespace Avisota\Contao\SubscriptionMember;
 
-
 use Avisota\Contao\SubscriptionNotificationCenterBridge\Event\BuildTokensFromRecipientEvent;
 use Avisota\Contao\SubscriptionNotificationCenterBridge\SubscriptionNotificationCenterBridgeEvents;
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
@@ -24,7 +23,6 @@ use ContaoCommunityAlliance\Contao\Bindings\Events\System\LoadLanguageFileEvent;
 use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;
 use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 
 /**
  * Class EventsSubscriber
