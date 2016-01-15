@@ -49,12 +49,12 @@
     "extra": {
         "contao": {
             "sources": {
-                "module": "system/modules/avisota-subscription-member"
+                "contao": "system/modules/avisota-subscription-member"
             },
             "transifex": {
                 "project": "avisota-contao",
                 "prefix": "contao-subscription-member-",
-                "languages_cto": "module/languages",
+                "languages_cto": "contao/languages",
                 "languages_tx": ".tx"
             }
         },
