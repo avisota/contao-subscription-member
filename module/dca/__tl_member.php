@@ -2,7 +2,7 @@
 
 /**
  * Avisota newsletter and mailing system
- * Copyright © 2015 Sven Baumann
+ * Copyright © 2016 Sven Baumann
  *
  * PHP version 5
  *
