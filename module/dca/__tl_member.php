@@ -2,19 +2,20 @@
 
 /**
  * Avisota newsletter and mailing system
- * Copyright (C) 2013 Tristan Lins
+ * Copyright © 2016 Sven Baumann
  *
  * PHP version 5
  *
- * @copyright  bit3 UG 2013
- * @author     Tristan Lins <tristan.lins@bit3.de>
+ * @copyright  way.vision
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @package    avisota/contao-core
  * @license    LGPL-3.0+
  * @filesource
  */
 
 
-MetaPalettes::appendBefore('tl_member', 'default', 'login', array('avisota' => array(':hide', 'avisota_lists', 'avisota_subscriptionAction')));
+
+\Bit3\Contao\MetaPalettes\MetaPalettes::appendBefore('tl_member', 'default', 'login', array('avisota' => array(':hide', 'avisota_lists', 'avisota_subscriptionAction')));
 /*
 $GLOBALS['TL_DCA']['tl_member']['config']['onload_callback'][]   = array('AvisotaDCA', 'filterByMailingLists');
 $GLOBALS['TL_DCA']['tl_member']['config']['onload_callback'][]   = array('tl_member_avisota', 'onload_callback');

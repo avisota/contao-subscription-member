@@ -2,12 +2,12 @@
 
 /**
  * Avisota newsletter and mailing system
- * Copyright (C) 2013 Tristan Lins
+ * Copyright © 2016 Sven Baumann
  *
  * PHP version 5
  *
- * @copyright  bit3 UG 2013
- * @author     Tristan Lins <tristan.lins@bit3.de>
+ * @copyright  way.vision 2016
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @package    avisota/contao-subscription-member
  * @license    LGPL-3.0+
  * @filesource
@@ -22,375 +22,402 @@ use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
 use ContaoCommunityAlliance\Contao\Bindings\Events\System\LoadLanguageFileEvent;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\PDOStatement;
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Query\Expression\ExpressionBuilder;
 use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Statement;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class MembersRecipientSource
+ * @SuppressWarnings(PHPMD.LongVariables)
  */
 class MembersRecipientSource implements RecipientSourceInterface
 {
-	/**
-	 * @var array
-	 */
-	protected $filteredGroups = array();
+    /**
+     * @var array
+     */
+    protected $filteredGroups = array();
 
-	/**
-	 * @var MailingList[]
-	 */
-	protected $filteredMailingLists = array();
+    /**
+     * @var MailingList[]
+     */
+    protected $filteredMailingLists = array();
 
-	/**
-	 * @var array
-	 */
-	protected $filteredProperties = array();
+    /**
+     * @var array
+     */
+    protected $filteredProperties = array();
 
-	/**
-	 * @var string
-	 */
-	protected $manageSubscriptionUrlPattern = null;
+    /**
+     * @var string
+     */
+    protected $manageSubscriptionUrlPattern = null;
 
-	/**
-	 * @var string
-	 */
-	protected $unsubscribeUrlPattern = null;
+    /**
+     * @var string
+     */
+    protected $unsubscribeUrlPattern = null;
 
-	/**
-	 * Count the recipients.
-	 *
-	 * @return int
-	 */
-	public function countRecipients()
-	{
-		global $container;
+    /**
+     * Count the recipients.
+     *
+     * @return int
+     */
+    public function countRecipients()
+    {
+        global $container;
 
-		/** @var Connection $connection */
-		$connection = $container['doctrine.connection.default'];
+        /** @var Connection $connection */
+        $connection = $container['doctrine.connection.default'];
 
-		$queryBuilder = $connection->createQueryBuilder();
-		$queryBuilder
-			->select('COUNT(m.id)')
-			->from('tl_member', 'm')
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder
+            ->select('COUNT(m.id)')
+            ->from('tl_member', 'm')
             ->where('email IS NOT NULL')
             ->andWhere('LENGTH(email) > 0');
-		$this->prepareQuery($queryBuilder);
+        $this->prepareQuery($queryBuilder);
 
-		/** @var Statement $stmt */
-		$stmt = $queryBuilder->execute();
+        /** @var Statement $stmt */
+        $stmt = $queryBuilder->execute();
 
-		return (int) $stmt->fetchColumn();
-	}
+        return (int) $stmt->fetchColumn();
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getRecipients($limit = null, $offset = null)
-	{
-		global $container;
+    /**
+     * @param null $limit
+     * @param null $offset
+     *
+     * @return array
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
+     */
+    public function getRecipients($limit = null, $offset = null)
+    {
+        global $container,
+               $TL_LANG;
 
-		/** @var Connection $connection */
-		$connection = $container['doctrine.connection.default'];
+        /** @var Connection $connection */
+        $connection = $container['doctrine.connection.default'];
 
-		$queryBuilder = $connection->createQueryBuilder();
-		$queryBuilder
-			->select('m.*')
-			->from('tl_member', 'm')
+        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder
+            ->select('m.*')
+            ->from('tl_member', 'm')
             ->where('email IS NOT NULL')
             ->andWhere('LENGTH(email) > 0');
-		$this->prepareQuery($queryBuilder);
+        $this->prepareQuery($queryBuilder);
 
-		if ($limit > 0) {
-			$queryBuilder->setMaxResults($limit);
-		}
-		if ($offset > 0) {
-			$queryBuilder->setFirstResult($offset);
-		}
+        if ($limit > 0) {
+            $queryBuilder->setMaxResults($limit);
+        }
+        if ($offset > 0) {
+            $queryBuilder->setFirstResult($offset);
+        }
 
-		$queryBuilder->orderBy('m.id');
+        $queryBuilder->orderBy('m.id');
 
-		/** @var PDOStatement $stmt */
-		$stmt = $queryBuilder->execute();
+        /** @var PDOStatement $stmt */
+        $stmt = $queryBuilder->execute();
 
-		$mutableRecipients = array();
+        $mutableRecipients = array();
 
-		/** @var EventDispatcherInterface $eventDispatcher */
-		$eventDispatcher = $GLOBALS['container']['event-dispatcher'];
+        /** @var EventDispatcherInterface $eventDispatcher */
+        $eventDispatcher = $container['event-dispatcher'];
 
-		foreach ($stmt as $row) {
-			if ($this->manageSubscriptionUrlPattern) {
-				$loadLanguageEvent = new LoadLanguageFileEvent('fe_avisota_member_subscription');
-				$eventDispatcher->dispatch(ContaoEvents::SYSTEM_LOAD_LANGUAGE_FILE, $loadLanguageEvent);
+        foreach ($stmt as $row) {
+            if ($this->manageSubscriptionUrlPattern) {
+                $loadLanguageEvent = new LoadLanguageFileEvent('fe_avisota_member_subscription');
+                $eventDispatcher->dispatch(ContaoEvents::SYSTEM_LOAD_LANGUAGE_FILE, $loadLanguageEvent);
 
-				$url = $this->manageSubscriptionUrlPattern;
-				$url = preg_replace_callback(
-					'~##([^#]+)##~',
-					function ($matches) use ($row) {
-						if (isset($row[$matches[1]])) {
-							return $row[$matches[1]];
-						}
-						return $matches[0];
-					},
-					$url
-				);
+                $url = $this->manageSubscriptionUrlPattern;
+                $url = preg_replace_callback(
+                    '~##([^#]+)##~',
+                    function ($matches) use ($row) {
+                        if (isset($row[$matches[1]])) {
+                            return $row[$matches[1]];
+                        }
+                        return $matches[0];
+                    },
+                    $url
+                );
 
-				$row['manage_subscription_link'] = array(
-					'url'  => $url,
-					'text' => &$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['manage_subscription']
-				);
-			}
+                $row['manage_subscription_link'] = array
+                (
+                    'url'  => $url,
+                    'text' => &$TL_LANG['fe_avisota_member_subscription']['manage_subscription']
+                );
+            }
 
-			if ($this->unsubscribeUrlPattern) {
-				$loadLanguageEvent = new LoadLanguageFileEvent('fe_avisota_member_subscription');
-				$eventDispatcher->dispatch(ContaoEvents::SYSTEM_LOAD_LANGUAGE_FILE, $loadLanguageEvent);
+            if ($this->unsubscribeUrlPattern) {
+                $loadLanguageEvent = new LoadLanguageFileEvent('fe_avisota_member_subscription');
+                $eventDispatcher->dispatch(ContaoEvents::SYSTEM_LOAD_LANGUAGE_FILE, $loadLanguageEvent);
 
-				$url = $this->unsubscribeUrlPattern;
-				$url = preg_replace_callback(
-					'~##([^#]+)##~',
-					function ($matches) use ($row) {
-						if (isset($row[$matches[1]])) {
-							return $row[$matches[1]];
-						}
-						return $matches[0];
-					},
-					$url
-				);
+                $url = $this->unsubscribeUrlPattern;
+                $url = preg_replace_callback(
+                    '~##([^#]+)##~',
+                    function ($matches) use ($row) {
+                        if (isset($row[$matches[1]])) {
+                            return $row[$matches[1]];
+                        }
+                        return $matches[0];
+                    },
+                    $url
+                );
 
-				$row['unsubscribe_link'] = array(
-					'url'  => $url,
-					'text' => &$GLOBALS['TL_LANG']['fe_avisota_member_subscription']['unsubscribe_direct']
-				);
-			}
+                $row['unsubscribe_link'] = array
+                (
+                    'url'  => $url,
+                    'text' => &$TL_LANG['fe_avisota_member_subscription']['unsubscribe_direct']
+                );
+            }
 
-			$mutableRecipients[] = new MutableRecipient(
-				$row['email'],
-				$row
-			);
-		}
+            $mutableRecipients[] = new MutableRecipient(
+                $row['email'],
+                $row
+            );
+        }
 
-		return $mutableRecipients;
-	}
+        return $mutableRecipients;
+    }
 
-	protected function prepareQuery(QueryBuilder $queryBuilder)
-	{
-		$expr = $queryBuilder->expr();
+    /**
+     * @param QueryBuilder $queryBuilder
+     */
+    protected function prepareQuery(QueryBuilder $queryBuilder)
+    {
+        $expressionBuilder = $queryBuilder->expr();
 
-		if (count($this->filteredGroups)) {
-			foreach ($this->filteredGroups as $index => $filteredGroup) {
-				$condition = $filteredGroup['membersGroupFilter_condition'];
-				$group     = $filteredGroup['membersGroupFilter_group'];
+        $this->addFilteredGroups($queryBuilder, $expressionBuilder);
+        $this->addFilteredMailingLists($queryBuilder, $expressionBuilder);
+        $this->addFilteredMailingLists($queryBuilder, $expressionBuilder);
 
-				switch ($condition) {
-					case 'in':
-						$where = $expr->orX();
-						$where->add('m.groups REGEXP :groupPattern_' . $index);
-						break;
+    }
 
-					case 'not in':
-						$where = $expr->andX();
-						$where->add('m.groups NOT REGEXP :groupPattern_' . $index);
-						break;
+    /**
+     * @param $queryBuilder
+     * @param $expressionBuilder
+     */
+    protected function addFilteredGroups(QueryBuilder &$queryBuilder, ExpressionBuilder $expressionBuilder)
+    {
+        if (!count($this->filteredGroups)) {
+            return;
+        }
 
-					default:
-						continue 2;
-				}
+        foreach ($this->filteredGroups as $index => $filteredGroup) {
+            $condition = $filteredGroup['membersGroupFilter_condition'];
+            $group     = $filteredGroup['membersGroupFilter_group'];
 
-                // The REGEXP pattern:
-                //   ^a:[[:digit:]]+:\{([is]:[[:digit:]]+(:"[[:alnum:]]+")?;[is]:[[:digit:]]+(:"[[:alnum:]]+")?;)*[is]:[[:digit:]]+(:"[[:alnum:]]+")?;(s:%length%:"%id%"|i:%id%);
-                //    a:     2      : {  i  :     0                        ;  s :     2       :"    10      "  ;   i  :    1                         ; s:   2    :" 11 "        ;
-                //    a:     2      : {  i  :     0                        ; i  :    10                        ;   i  :    1                         ;                   i: 11  ;
-                //    a:     2      : {   s :     1       :"     a      "  ; i  :    10                        ;    s :    1        :"     b      "  ;                   i: 11  ;
+            switch ($condition) {
+                case 'in':
+                    $where = $expressionBuilder->orX();
+                    $where->add('m.groups REGEXP :groupPattern_' . $index);
+                    break;
 
-				$queryBuilder
-					->andWhere($where)
-					->setParameter(
-                        'groupPattern_' . $index,
-                        strtr(
-                            '^a:[[:digit:]]+:\{([is]:[[:digit:]]+(:"[[:alnum:]]+")?;[is]:[[:digit:]]+(:"[[:alnum:]]+")?;)*[is]:[[:digit:]]+(:"[[:alnum:]]+")?;(s:%length%:"%id%"|i:%id%);',
-                            array(
-                                '%length%' => strlen($group),
-                                '%id%'     => $group,
-                            )
+                case 'not in':
+                    $where = $expressionBuilder->andX();
+                    $where->add('m.groups NOT REGEXP :groupPattern_' . $index);
+                    break;
+
+                default:
+                    continue 2;
+            }
+
+            $queryBuilder
+                ->andWhere($where)
+                ->setParameter(
+                    'groupPattern_' . $index,
+                    strtr(
+                        '^a:[[:digit:]]+:\{([is]:[[:digit:]]+(:"[[:alnum:]]+")?;'
+                        . '[is]:[[:digit:]]+(:"[[:alnum:]]+")?;)*[is]:[[:digit:]]+(:"[[:alnum:]]+")?;'
+                        . '(s:%length%:"%id%"|i:%id%);',
+                        array
+                        (
+                            '%length%' => strlen($group),
+                            '%id%'     => $group,
+                        )
+                    )
+                );
+        }
+    }
+
+    /**
+     * @param $queryBuilder
+     * @param $expressionBuilder
+     */
+    protected function addFilteredMailingLists(QueryBuilder &$queryBuilder, ExpressionBuilder $expressionBuilder)
+    {
+        if (!count($this->filteredMailingLists)) {
+            return;
+        }
+
+        $queryBuilder
+            ->innerJoin(
+                'm',
+                'orm_avisota_subscription',
+                's',
+                's.recipientType = :recipientType AND s.recipientId = m.id'
+            );
+        $queryBuilder->setParameter('recipientType', 'member');
+
+        $orExpression = $expressionBuilder->orX();
+        foreach ($this->filteredMailingLists as $index => $mailingList) {
+            $orExpression->add($expressionBuilder->eq('s.mailingList', ':mailingList' . $index));
+            $queryBuilder->setParameter('mailingList' . $index, $mailingList->getId());
+        }
+
+        $queryBuilder->andWhere($orExpression);
+    }
+
+    /**
+     * @param $queryBuilder
+     * @param $expressionBuilder
+     */
+    protected function addFilteredProperties(QueryBuilder &$queryBuilder, ExpressionBuilder $expressionBuilder)
+    {
+        if (!count($this->filteredProperties)) {
+            return;
+        }
+
+        foreach ($this->filteredProperties as $index => $filteredProperty) {
+            $property   = 'm.' . $filteredProperty['membersPropertyFilter_property'];
+            $comparator = $filteredProperty['membersPropertyFilter_comparator'];
+            $value      = $filteredProperty['membersPropertyFilter_value'];
+
+            switch ($comparator) {
+                case 'empty':
+                    $queryBuilder->andWhere(
+                        $expressionBuilder->orX(
+                            $expressionBuilder->eq($property, ':property' . $index),
+                            $expressionBuilder->isNull($property)
                         )
                     );
-			}
-		}
+                    $value = '';
+                    break;
 
-		if (count($this->filteredMailingLists)) {
-			$queryBuilder
-				->innerJoin('m', 'orm_avisota_subscription', 's', 's.recipientType = :recipientType AND s.recipientId = m.id')
-				->setParameter('recipientType', 'member');
+                case 'not empty':
+                    $queryBuilder->andWhere(
+                        $expressionBuilder->gt($property, ':property' . $index)
+                    );
+                    $value = '';
+                    break;
 
-			$or = $expr->orX();
-			foreach ($this->filteredMailingLists as $index => $mailingList) {
-				$or->add($expr->eq('s.mailingList', ':mailingList' . $index));
-				$queryBuilder->setParameter('mailingList' . $index, $mailingList->getId());
-			}
+                default:
+                    if (!method_exists($expressionBuilder, $comparator)) {
+                        continue;
+                    }
 
-			$queryBuilder->andWhere($or);
-		}
+                    $queryBuilder->andWhere(
+                        $expressionBuilder->$comparator($property, ':property' . $index)
+                    );
+                    break;
+            }
 
-		if (count($this->filteredProperties)) {
-			foreach ($this->filteredProperties as $index => $filteredProperty) {
-				$property   = 'm.' . $filteredProperty['membersPropertyFilter_property'];
-				$comparator = $filteredProperty['membersPropertyFilter_comparator'];
-				$value      = $filteredProperty['membersPropertyFilter_value'];
+            $queryBuilder->setParameter(
+                ':property' . $index,
+                $value
+            );
+        }
+    }
 
-				switch ($comparator) {
-					case 'empty':
-						$queryBuilder->andWhere(
-							$expr->orX(
-								$expr->eq($property, ':property' . $index),
-								$expr->isNull($property)
-							)
-						);
-						$value = '';
-						break;
+    /**
+     * @param array $filteredGroups
+     *
+     * @return static
+     */
+    public function setFilteredGroups(array $filteredGroups)
+    {
+        $this->filteredGroups = $filteredGroups;
 
-					case 'not empty':
-						$queryBuilder->andWhere(
-							$expr->gt($property, ':property' . $index)
-						);
-						$value = '';
-						break;
+        return $this;
+    }
 
-					case 'eq':
-						$queryBuilder->andWhere(
-							$expr->eq($property, ':property' . $index)
-						);
-						break;
+    /**
+     * @return array
+     */
+    public function getFilteredGroups()
+    {
+        return $this->filteredGroups;
+    }
 
-					case 'neq':
-						$queryBuilder->andWhere(
-							$expr->neq($property, ':property' . $index)
-						);
-						break;
+    /**
+     * @return \Avisota\Contao\Entity\MailingList[]
+     */
+    public function getFilteredMailingLists()
+    {
+        return $this->filteredMailingLists;
+    }
 
-					case 'gt':
-						$queryBuilder->andWhere(
-							$expr->gt($property, ':property' . $index)
-						);
-						break;
+    /**
+     * @param MailingList[] $filteredMailingLists
+     *
+     * @return static
+     */
+    public function setFilteredMailingLists(array $filteredMailingLists)
+    {
+        $this->filteredMailingLists = array_values($filteredMailingLists);
 
-					case 'gte':
-						$queryBuilder->andWhere(
-							$expr->gte($property, ':property' . $index)
-						);
-						break;
+        return $this;
+    }
 
-					case 'lt':
-						$queryBuilder->andWhere(
-							$expr->lt($property, ':property' . $index)
-						);
-						break;
+    /**
+     * @return array
+     */
+    public function getFilteredProperties()
+    {
+        return $this->filteredProperties;
+    }
 
-					case 'lte':
-						$queryBuilder->andWhere(
-							$expr->lte($property, ':property' . $index)
-						);
-						break;
-				}
+    /**
+     * @param array $filteredProperties
+     *
+     * @return static
+     */
+    public function setFilteredProperties(array $filteredProperties)
+    {
+        $this->filteredProperties = $filteredProperties;
 
-				$queryBuilder->setParameter(
-					':property' . $index,
-					$value
-				);
-			}
-		}
-	}
+        return $this;
+    }
 
-	/**
-	 * @param array $filteredGroups
-	 *
-	 * @return static
-	 */
-	public function setFilteredGroups(array $filteredGroups)
-	{
-		$this->filteredGroups = $filteredGroups;
-		return $this;
-	}
+    /**
+     * @return string
+     */
+    public function getManageSubscriptionUrlPattern()
+    {
+        return $this->manageSubscriptionUrlPattern;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getFilteredGroups()
-	{
-		return $this->filteredGroups;
-	}
+    /**
+     * @param string $manageSubscriptionUrlPattern
+     *
+     * @return static
+     */
+    public function setManageSubscriptionUrlPattern($manageSubscriptionUrlPattern)
+    {
+        $this->manageSubscriptionUrlPattern =
+            empty($manageSubscriptionUrlPattern) ? null : (string) $manageSubscriptionUrlPattern;
 
-	/**
-	 * @return \Avisota\Contao\Entity\MailingList[]
-	 */
-	public function getFilteredMailingLists()
-	{
-		return $this->filteredMailingLists;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param MailingList[] $filteredMailingLists
-	 *
-	 * @return static
-	 */
-	public function setFilteredMailingLists(array $filteredMailingLists)
-	{
-		$this->filteredMailingLists = array_values($filteredMailingLists);
-		return $this;
-	}
+    /**
+     * @return string
+     */
+    public function getUnsubscribeUrlPattern()
+    {
+        return $this->unsubscribeUrlPattern;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getFilteredProperties()
-	{
-		return $this->filteredProperties;
-	}
+    /**
+     * @param string $unsubscribeUrlPattern
+     *
+     * @return static
+     */
+    public function setUnsubscribeUrlPattern($unsubscribeUrlPattern)
+    {
+        $this->unsubscribeUrlPattern =
+            empty($unsubscribeUrlPattern) ? null : (string) $unsubscribeUrlPattern;
 
-	/**
-	 * @param array $filteredProperties
-	 *
-	 * @return static
-	 */
-	public function setFilteredProperties(array $filteredProperties)
-	{
-		$this->filteredProperties = $filteredProperties;
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getManageSubscriptionUrlPattern()
-	{
-		return $this->manageSubscriptionUrlPattern;
-	}
-
-	/**
-	 * @param string $manageSubscriptionUrlPattern
-	 *
-	 * @return static
-	 */
-	public function setManageSubscriptionUrlPattern($manageSubscriptionUrlPattern)
-	{
-		$this->manageSubscriptionUrlPattern = empty($manageSubscriptionUrlPattern) ? null : (string) $manageSubscriptionUrlPattern;
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getUnsubscribeUrlPattern()
-	{
-		return $this->unsubscribeUrlPattern;
-	}
-
-	/**
-	 * @param string $unsubscribeUrlPattern
-	 *
-	 * @return static
-	 */
-	public function setUnsubscribeUrlPattern($unsubscribeUrlPattern)
-	{
-		$this->unsubscribeUrlPattern = empty($unsubscribeUrlPattern) ? null : (string) $unsubscribeUrlPattern;
-		return $this;
-	}
+        return $this;
+    }
 }

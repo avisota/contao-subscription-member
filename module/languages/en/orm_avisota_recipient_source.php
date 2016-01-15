@@ -2,73 +2,101 @@
 
 /**
  * Avisota newsletter and mailing system
- * Copyright (C) 2013 Tristan Lins
+ * Copyright © 2016 Sven Baumann
  *
  * PHP version 5
  *
- * @copyright  bit3 UG 2013
- * @author     Tristan Lins <tristan.lins@bit3.de>
+ * @copyright  way.vision 2016
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @package    avisota/contao-subscription-recipient
  * @license    LGPL-3.0+
  * @filesource
  */
 
+global $TL_LANG;
 
 /**
  * Table orm_avisota_recipient_source
  * Entity Avisota\Contao:RecipientSource
  */
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersManageSubscriptionPage']    = array(
-	'Subscription management page',
-	'Please choose the subscription management page.'
-);
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersUnsubscribePage']           = array(
-	'Unsubscribe page',
-	'Please choose the page for direct unsubscription.'
-);
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersUseGroupFilter']            = array(
-	'Filter by groups',
-	'Filter recipients by group membership.'
-);
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter']               = array(
-	'Group filter',
-	'Filter the recipients by group membership.'
-);
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_condition']     = array('Condition');
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_group']         = array('Group');
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersUsePropertyFilter']         = array(
-	'Filter by properties',
-	'Filter recipients by properties and values.'
-);
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter']            = array(
-	'Properties filter',
-	'Filter the recipients by property values.'
-);
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_property']   = array('Column');
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparator'] = array('Comparator');
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_value']      = array('Value');
+$ormAvisotaRecipientSource = array(
+    'members_legend' =>
+        'Members settings',
 
-/**
- * Legends
- */
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['members_legend'] = 'Members settings';
+    'membersManageSubscriptionPage' => array(
+        'Subscription management page',
+        'Please choose the subscription management page.',
+    ),
 
-/**
- * Reference
- */
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['members'] = array(
-	'Members',
-	'Use the Contao integrated members management.'
+    'membersUnsubscribePage' => array(
+        'Unsubscribe page',
+        'Please choose the page for direct unsubscription.',
+    ),
+
+    'membersUseGroupFilter' => array(
+        'Filter by groups',
+        'Filter recipients by group membership.',
+    ),
+
+    'membersGroupFilter' => array(
+        'Group filter',
+        'Filter the recipients by group membership.',
+    ),
+
+    'membersGroupFilter_condition' => array(
+        'Condition',
+    ),
+
+    'membersGroupFilter_group' => array(
+        'Group',
+    ),
+
+    'membersUsePropertyFilter' => array(
+        'Filter by properties',
+        'Filter recipients by properties and values.',
+    ),
+
+    'membersPropertyFilter' => array(
+        'Properties filter',
+        'Filter the recipients by property values.',
+    ),
+
+    'membersPropertyFilter_property' => array(
+        'Column',
+    ),
+
+    'membersPropertyFilter_comparator' => array(
+        'Comparator',
+    ),
+
+    'membersPropertyFilter_value' => array(
+        'Value',
+    ),
+
+
+    'members' => array(
+        'Members',
+        'Use the Contao integrated members management.',
+    ),
+
+    'membersGroupFilter_conditions' => array(
+        'in'     => 'in',
+        'not in' => 'not in',
+    ),
+
+    'membersPropertyFilter_comparators' => array(
+        'empty'     => 'is empty',
+        'not_empty' => 'is not empty',
+        'eq'        => '==',
+        'neq'       => '!=',
+        'gt'        => '>',
+        'gte'       => '>=',
+        'lt'        => '<',
+        'lte'       => '<=',
+    ),
 );
 
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_conditions']['in']     = 'in';
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersGroupFilter_conditions']['not in'] = 'not in';
-
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparators']['empty']     = 'is empty';
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparators']['not_empty'] = 'is not empty';
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparators']['eq']        = '==';
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparators']['neq']       = '!=';
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparators']['gt']        = '>';
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparators']['gte']       = '>=';
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparators']['lt']        = '<';
-$GLOBALS['TL_LANG']['orm_avisota_recipient_source']['membersPropertyFilter_comparators']['lte']       = '<=';
+$TL_LANG['orm_avisota_recipient_source'] = array_merge(
+    $TL_LANG['orm_avisota_recipient_source'],
+    $ormAvisotaRecipientSource
+);

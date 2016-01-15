@@ -2,12 +2,12 @@
 
 /**
  * Avisota newsletter and mailing system
- * Copyright (C) 2013 Tristan Lins
+ * Copyright © 2016 Sven Baumann
  *
  * PHP version 5
  *
- * @copyright  bit3 UG 2013
- * @author     Tristan Lins <tristan.lins@bit3.de>
+ * @copyright  way.vision 2016
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @package    avisota/contao-subscription-member
  * @license    LGPL-3.0+
  * @filesource
@@ -15,37 +15,13 @@
 
 namespace Avisota\Contao\SubscriptionMember;
 
-use Avisota\Contao\Core\DataContainer\OptionsBuilder;
-use Avisota\Contao\Entity\Recipient;
-use Avisota\Contao\Entity\Subscription;
-use Avisota\Contao\Subscription\Event\PrepareSubscriptionEvent;
-use Avisota\Contao\Subscription\Event\ResolveRecipientEvent;
-use Avisota\Contao\Subscription\Event\SubscriptionAwareEvent;
-use Avisota\Contao\Subscription\SubscriptionEvents;
-use Avisota\Contao\Subscription\SubscriptionManager;
 use Avisota\Contao\SubscriptionNotificationCenterBridge\Event\BuildTokensFromRecipientEvent;
-use Avisota\Contao\SubscriptionRecipient\Event\ExportRecipientPropertyEvent;
-use Avisota\Contao\SubscriptionRecipient\Event\MigrateRecipientEvent;
-use Contao\Doctrine\DBAL\DoctrineDbalEvents;
-use Contao\Doctrine\DBAL\Event\InitializeEventManager;
-use Contao\Doctrine\ORM\EntityAccessor;
-use Contao\Doctrine\ORM\EntityHelper;
+use Avisota\Contao\SubscriptionNotificationCenterBridge\SubscriptionNotificationCenterBridgeEvents;
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
-use ContaoCommunityAlliance\Contao\Bindings\Events\Backend\AddToUrlEvent;
 use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\LoadDataContainerEvent;
-use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\RedirectEvent;
-use ContaoCommunityAlliance\Contao\Bindings\Events\Controller\ReloadEvent;
 use ContaoCommunityAlliance\Contao\Bindings\Events\System\LoadLanguageFileEvent;
-use ContaoCommunityAlliance\Contao\Events\CreateOptions\CreateOptionsEvent;
-use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetEditModeButtonsEvent;
-use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
-use ContaoCommunityAlliance\DcGeneral\DcGeneralEvents;
 use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;
-use ContaoCommunityAlliance\DcGeneral\Event\ActionEvent;
-use ContaoCommunityAlliance\DcGeneral\Event\EventPropagator;
-use ContaoCommunityAlliance\DcGeneral\Factory\DcGeneralFactory;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -53,68 +29,100 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class EventsSubscriber implements EventSubscriberInterface
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function getSubscribedEvents()
-	{
-		return array(
-			GetPropertyOptionsEvent::NAME . '[orm_avisota_recipient_source][membersPropertyFilter][membersPropertyFilter_property]' => 'bypassCreateRecipientPropertiesOptions',
-			'avisota.subscription-notification-center-bridge.build-tokens-from-recipient'                                           => 'buildRecipientTokens',
-		);
-	}
+    /**
+     * @return array
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(
+            GetOptionsEvent::NAME => array(
+                array('bypassCreateRecipientPropertiesOptions'),
+            ),
 
-	public function bypassCreateRecipientPropertiesOptions(GetPropertyOptionsEvent $event)
-	{
-		$options = $event->getOptions();
-		$options = $this->getRecipientPropertiesOptions($event->getEnvironment(), $options);
-		$event->setOptions($options);
-	}
+            SubscriptionNotificationCenterBridgeEvents::BUILD_TOKENS_FROM_RECIPIENT => array(
+                array('buildRecipientTokens'),
+            ),
+        );
+    }
 
-	public function getRecipientPropertiesOptions(EnvironmentInterface $environment, $options = array())
-	{
-		/** @var EventDispatcher $eventDispatcher */
-		$eventDispatcher = $GLOBALS['container']['event-dispatcher'];
+    /**
+     * @param GetOptionsEvent $event
+     */
+    public function bypassCreateRecipientPropertiesOptions(GetOptionsEvent $event)
+    {
+        if (($event->getModel()->getProviderName() === 'orm_avisota_recipient_source'
+            && $event->getPropertyName() != 'membersPropertyFilter')
+            || $event->getSubPropertyName() != 'membersPropertyFilter_property'
+        ) {
+            return;
+        }
 
-		$loadDataContainerEvent = new LoadDataContainerEvent('tl_member');
-		$eventDispatcher->dispatch(ContaoEvents::CONTROLLER_LOAD_DATA_CONTAINER, $loadDataContainerEvent);
+        $options = $event->getOptions();
+        $options = $this->getRecipientPropertiesOptions($event->getEnvironment(), $options);
+        $event->setOptions($options);
+    }
 
-		$loadLanguageFileEvent = new LoadLanguageFileEvent('tl_member');
-		$eventDispatcher->dispatch(ContaoEvents::SYSTEM_LOAD_LANGUAGE_FILE, $loadLanguageFileEvent);
+    /**
+     * @param EnvironmentInterface $environment
+     * @param array                $options
+     *
+     * @return array
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
+     * @SuppressWarnings(PHPMD.LongVariables)
+     */
+    public function getRecipientPropertiesOptions(EnvironmentInterface $environment, $options = array())
+    {
+        if (!is_array($options)) {
+            $options = (array) $options;
+        }
+        $eventDispatcher = $environment->getEventDispatcher();
 
-		foreach ($GLOBALS['TL_DCA']['tl_member']['fields'] as $field => $config) {
-			$options[$field] = is_array($config['label'])
-				? $config['label'][0]
-				: $field;
-		}
+        $loadDataContainerEvent = new LoadDataContainerEvent('tl_member');
+        $eventDispatcher->dispatch(ContaoEvents::CONTROLLER_LOAD_DATA_CONTAINER, $loadDataContainerEvent);
 
-		return $options;
-	}
+        $loadLanguageFileEvent = new LoadLanguageFileEvent('tl_member');
+        $eventDispatcher->dispatch(ContaoEvents::SYSTEM_LOAD_LANGUAGE_FILE, $loadLanguageFileEvent);
 
-	public function buildRecipientTokens(BuildTokensFromRecipientEvent $event)
-	{
-		$recipient = $event->getRecipient();
+        global $TL_DCA;
+        foreach ($TL_DCA['tl_member']['fields'] as $field => $config) {
+            $options[$field] = is_array($config['label'])
+                ? $config['label'][0]
+                : $field;
+        }
 
-		/*
-		if (!preg_match('~^member:(\d+)$~', $recipient, $matches)) {
-			return;
-		}
+        return $options;
+    }
 
-		$memberId = $matches[1];
-		$member   = \MemberModel::findByPk($memberId);
+    /**
+     * @param BuildTokensFromRecipientEvent $event
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
+    public function buildRecipientTokens(BuildTokensFromRecipientEvent $event)
+    {
+        // TODO evaluate this method
+        /** @noinspection PhpUnusedLocalVariableInspection */
+        $recipient = $event->getRecipient();
 
-		// member does not exists (anymore)
-		if (!$member) {
-			return;
-		}
+        /*
+        if (!preg_match('~^member:(\d+)$~', $recipient, $matches)) {
+            return;
+        }
 
-		/** @var \MemberModel $member * /
+        $memberId = $matches[1];
+        $member   = \MemberModel::findByPk($memberId);
 
-		$tokens = $event->getTokens();
+        // member does not exists (anymore)
+        if (!$member) {
+            return;
+        }
 
-		foreach ($member->row() as $key => $value) {
-			$tokens['recipient_' . $key] = $value;
-		}
-		*/
-	}
+        /** @var \MemberModel $member * /
+
+        $tokens = $event->getTokens();
+
+        foreach ($member->row() as $key => $value) {
+            $tokens['recipient_' . $key] = $value;
+        }
+        */
+    }
 }
