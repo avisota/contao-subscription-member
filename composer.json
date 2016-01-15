@@ -29,8 +29,8 @@
     },
     "require": {
         "php": ">=5.3",
-        "avisota/contao-core": "~2.2",
-        "avisota/contao-subscription": "~2.0",
+        "avisota/contao-core": "3.0.x-dev",
+        "avisota/contao-subscription": "3.0.x-dev",
         "contao-community-alliance/composer-plugin": "~2.3",
         "contao/core": ">=2.11.11,<3.6"
     },
@@ -42,19 +42,19 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "Avisota\\Contao\\SubscriptionMember": "src/"
         }
     },
     "extra": {
         "contao": {
             "sources": {
-                "module": "system/modules/avisota-subscription-member"
+                "contao": "system/modules/avisota-subscription-member"
             },
             "transifex": {
                 "project": "avisota-contao",
                 "prefix": "contao-subscription-member-",
-                "languages_cto": "module/languages",
+                "languages_cto": "contao/languages",
                 "languages_tx": ".tx"
             }
         },
