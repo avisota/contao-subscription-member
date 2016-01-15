@@ -29,8 +29,8 @@
     },
     "require": {
         "php": ">=5.3",
-        "avisota/contao-core": "~2.2",
-        "avisota/contao-subscription": "~2.0",
+        "avisota/contao-core": "3.0.x-dev",
+        "avisota/contao-subscription": "3.0.x-dev",
         "contao-community-alliance/composer-plugin": "~2.3",
         "contao/core": ">=2.11.11,<3.6"
     },
