@@ -43,7 +43,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Avisota\\Contao\\SubscriptionMember": "src/"
+            "Avisota\\Contao\\SubscriptionMember\\": "src/"
         }
     },
     "extra": {
