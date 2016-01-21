@@ -1,0 +1,16 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file datatype="php" date="2014-05-06T04:02:52+02:00" original="modules" source-language="en" target-language="rm">
+    <body>
+      <trans-unit id="MOD.avisota-subscription-member.0">
+        <source>Avisota - Subscription for members</source>
+        <target>Avisota - Abunament per commembers</target>
+        
+      </trans-unit>
+      <trans-unit id="MOD.avisota-subscription-member.1">
+        <source>Contao member subscription for Avisota.</source>
+        <target>Abunament dad Avisota per commembers da Contao.</target>
+        
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
