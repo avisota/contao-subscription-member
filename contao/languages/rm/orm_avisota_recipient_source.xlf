@@ -1,0 +1,156 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file datatype="php" date="2014-08-07T04:02:25+02:00" original="orm_avisota_recipient_source" source-language="en" target-language="rm">
+    <body>
+      <trans-unit id="orm_avisota_recipient_source.membersManageSubscriptionPage.0">
+        <source>Subscription management page</source>
+        <target>Pagina d'administraziun dils abunaments</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersManageSubscriptionPage.1">
+        <source>Please choose the subscription management page.</source>
+        <target>Tscherna la pagina per l'administraziun dals abunaments.</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersUnsubscribePage.0">
+        <source>Unsubscribe page</source>
+        <target>Pabina per de-abunar</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersUnsubscribePage.1">
+        <source>Please choose the page for direct unsubscription.</source>
+        <target>Tscherna la pagina per de-abunar directamain.</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersUseGroupFilter.0">
+        <source>Filter by groups</source>
+        <target>Filtrar tenor gruppas</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersUseGroupFilter.1">
+        <source>Filter recipients by group membership.</source>
+        <target>Filtrar ils destinaturs tenor gruppas.</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersGroupFilter.0">
+        <source>Group filter</source>
+        <target>Filter da gruppas</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersGroupFilter.1">
+        <source>Filter the recipients by group membership.</source>
+        <target>Filtrar ils destinaturs tenor gruppas.</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersGroupFilter_condition.0">
+        <source>Condition</source>
+        <target>Cundiziun</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersGroupFilter_group.0">
+        <source>Group</source>
+        <target>Gruppa</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersUsePropertyFilter.0">
+        <source>Filter by properties</source>
+        <target>Filtrar tenor caracteristicas</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersUsePropertyFilter.1">
+        <source>Filter recipients by properties and values.</source>
+        <target>Filtrar ils destinaturs tenor caracteristicas e valurs.</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter.0">
+        <source>Properties filter</source>
+        <target>Filter da caracteristicas</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter.1">
+        <source>Filter the recipients by property values.</source>
+        <target>Filtrar ils destinaturs tenor las valurs da caracteristicas.</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter_property.0">
+        <source>Column</source>
+        <target>Colonnas</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter_comparator.0">
+        <source>Comparator</source>
+        <target>Cumparegliader</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter_value.0">
+        <source>Value</source>
+        <target>Valur</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.members_legend">
+        <source>Members settings</source>
+        <target>Configuraziun da commembers</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.members.0">
+        <source>Members</source>
+        <target>Commembers</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.members.1">
+        <source>Use the Contao integrated members management.</source>
+        <target>Utilisar l'administraziun da commembers da Contao.</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersGroupFilter_conditions.in">
+        <source>in</source>
+        <target>en</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersGroupFilter_conditions.not in">
+        <source>not in</source>
+        <target>betg en</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter_comparators.empty">
+        <source>is empty</source>
+        <target>è vid</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter_comparators.not_empty">
+        <source>is not empty</source>
+        <target>n'è betg vid</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter_comparators.eq">
+        <source>==</source>
+        <target>==</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter_comparators.neq">
+        <source>!=</source>
+        <target>!=</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter_comparators.gt">
+        <source>&gt;</source>
+        <target>&gt;</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter_comparators.gte">
+        <source>&gt;=</source>
+        <target>&gt;=</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter_comparators.lt">
+        <source>&lt;</source>
+        <target>&lt;</target>
+        
+      </trans-unit>
+      <trans-unit id="orm_avisota_recipient_source.membersPropertyFilter_comparators.lte">
+        <source>&lt;=</source>
+        <target>&lt;=</target>
+        
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
