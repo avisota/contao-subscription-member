@@ -44,6 +44,11 @@
             "Avisota\\Contao\\SubscriptionMember\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Avisota\\Test\\Contao\\SubscriptionMember\\": "tests/Test/"
+        }
+    },
     "extra": {
         "contao": {
             "sources": {
