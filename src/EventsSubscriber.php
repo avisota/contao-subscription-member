@@ -15,6 +15,7 @@
 
 namespace Avisota\Contao\SubscriptionMember;
 
+use Avisota\Contao\Core\Service\SuperglobalsService;
 use Avisota\Contao\SubscriptionNotificationCenterBridge\Event\BuildTokensFromRecipientEvent;
 use Avisota\Contao\SubscriptionNotificationCenterBridge\SubscriptionNotificationCenterBridgeEvents;
 use ContaoCommunityAlliance\Contao\Bindings\ContaoEvents;
@@ -67,7 +68,6 @@ class EventsSubscriber implements EventSubscriberInterface
      * @param array                $options
      *
      * @return array
-     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      * @SuppressWarnings(PHPMD.LongVariables)
      */
     public function getRecipientPropertiesOptions(EnvironmentInterface $environment, $options = array())
@@ -75,6 +75,8 @@ class EventsSubscriber implements EventSubscriberInterface
         if (!is_array($options)) {
             $options = (array) $options;
         }
+        global $container;
+
         $eventDispatcher = $environment->getEventDispatcher();
 
         $loadDataContainerEvent = new LoadDataContainerEvent('tl_member');
@@ -83,8 +85,9 @@ class EventsSubscriber implements EventSubscriberInterface
         $loadLanguageFileEvent = new LoadLanguageFileEvent('tl_member');
         $eventDispatcher->dispatch(ContaoEvents::SYSTEM_LOAD_LANGUAGE_FILE, $loadLanguageFileEvent);
 
-        global $TL_DCA;
-        foreach ($TL_DCA['tl_member']['fields'] as $field => $config) {
+        /** @var SuperglobalsService $superglobals */
+        $superglobals = $container['avisota.superglobals'];
+        foreach ($superglobals->getFromDataContainer('tl_members/fields') as $field => $config) {
             $options[$field] = is_array($config['label'])
                 ? $config['label'][0]
                 : $field;

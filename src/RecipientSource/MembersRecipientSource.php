@@ -15,6 +15,7 @@
 
 namespace Avisota\Contao\SubscriptionMember\RecipientSource;
 
+use Avisota\Contao\Core\Service\SuperglobalsService;
 use Avisota\Contao\Entity\MailingList;
 use Avisota\Recipient\MutableRecipient;
 use Avisota\RecipientSource\RecipientSourceInterface;
@@ -89,12 +90,10 @@ class MembersRecipientSource implements RecipientSourceInterface
      * @param null $offset
      *
      * @return array
-     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
     public function getRecipients($limit = null, $offset = null)
     {
-        global $container,
-               $TL_LANG;
+        global $container;
 
         /** @var Connection $connection */
         $connection = $container['doctrine.connection.default'];
@@ -124,6 +123,9 @@ class MembersRecipientSource implements RecipientSourceInterface
         /** @var EventDispatcherInterface $eventDispatcher */
         $eventDispatcher = $container['event-dispatcher'];
 
+        /** @var SuperglobalsService $superglobals */
+        $superglobals = $container['avisota.superglobals'];
+
         foreach ($stmt as $row) {
             if ($this->manageSubscriptionUrlPattern) {
                 $loadLanguageEvent = new LoadLanguageFileEvent('fe_avisota_member_subscription');
@@ -144,7 +146,7 @@ class MembersRecipientSource implements RecipientSourceInterface
                 $row['manage_subscription_link'] = array
                 (
                     'url'  => $url,
-                    'text' => &$TL_LANG['fe_avisota_member_subscription']['manage_subscription']
+                    'text' => &$superglobals->getLanguage('fe_avisota_member_subscription/manage_subscription')
                 );
             }
 
@@ -167,7 +169,7 @@ class MembersRecipientSource implements RecipientSourceInterface
                 $row['unsubscribe_link'] = array
                 (
                     'url'  => $url,
-                    'text' => &$TL_LANG['fe_avisota_member_subscription']['unsubscribe_direct']
+                    'text' => &$superglobals->getLanguage('fe_avisota_member_subscription/unsubscribe_direct')
                 );
             }
 
