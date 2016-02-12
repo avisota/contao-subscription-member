@@ -3,10 +3,12 @@
     <body>
       <trans-unit id="MOD.avisota-subscription-member.0">
         <source>Avisota - Subscription for members</source>
+        <target>Avisota - Assinatura para membros</target>
         
       </trans-unit>
       <trans-unit id="MOD.avisota-subscription-member.1">
         <source>Contao member subscription for Avisota.</source>
+        <target>Assinatura de membro Contao para Avisota.</target>
         
       </trans-unit>
     </body>

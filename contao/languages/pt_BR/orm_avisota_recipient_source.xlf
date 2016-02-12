@@ -3,6 +3,7 @@
     <body>
       <trans-unit id="orm_avisota_recipient_source.membersManageSubscriptionPage.0">
         <source>Subscription management page</source>
+        <target>Página de gestão de subscrição</target>
         
       </trans-unit>
       <trans-unit id="orm_avisota_recipient_source.membersManageSubscriptionPage.1">
