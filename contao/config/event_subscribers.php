@@ -13,8 +13,8 @@
  * @filesource
  */
 
-/**
- * Recipient sources
- */
-$GLOBALS['AVISOTA_RECIPIENT_SOURCE']['members'] =
-    'Avisota\Contao\SubscriptionMember\RecipientSource\MembersRecipientSourceFactory';
+use Avisota\Contao\SubscriptionMember\EventsSubscriber;
+
+return array(
+    new EventsSubscriber()
+);
