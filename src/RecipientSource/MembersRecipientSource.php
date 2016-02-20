@@ -146,7 +146,7 @@ class MembersRecipientSource implements RecipientSourceInterface
                 $row['manage_subscription_link'] = array
                 (
                     'url'  => $url,
-                    'text' => &$superglobals->getLanguage('fe_avisota_member_subscription/manage_subscription')
+                    'text' => $superglobals->getLanguage('fe_avisota_member_subscription/manage_subscription')
                 );
             }
 
@@ -169,7 +169,7 @@ class MembersRecipientSource implements RecipientSourceInterface
                 $row['unsubscribe_link'] = array
                 (
                     'url'  => $url,
-                    'text' => &$superglobals->getLanguage('fe_avisota_member_subscription/unsubscribe_direct')
+                    'text' => $superglobals->getLanguage('fe_avisota_member_subscription/unsubscribe_direct')
                 );
             }
 
