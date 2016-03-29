@@ -31,8 +31,8 @@
         "php": ">=5.4",
         "contao/core": ">=3.5,<3.6",
         "contao-community-alliance/composer-plugin": "~2.4",
-        "avisota/contao-core": "~3.0",
-        "avisota/contao-subscription": "~3.0"
+        "avisota/contao-core": "dev-release/3.1.0",
+        "avisota/contao-subscription": "dev-release/3.1.0"
     },
     "require-dev": {
         "phpcq/all-tasks": "~1.1"
