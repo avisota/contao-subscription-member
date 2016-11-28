@@ -192,7 +192,6 @@ class MembersRecipientSource implements RecipientSourceInterface
         $this->addFilteredGroups($queryBuilder, $expressionBuilder);
         $this->addFilteredMailingLists($queryBuilder, $expressionBuilder);
         $this->addFilteredMailingLists($queryBuilder, $expressionBuilder);
-
     }
 
     /**
