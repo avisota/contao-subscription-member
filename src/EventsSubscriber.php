@@ -52,7 +52,7 @@ class EventsSubscriber implements EventSubscriberInterface
     public function bypassCreateRecipientPropertiesOptions(GetOptionsEvent $event)
     {
         if (($event->getModel()->getProviderName() === 'orm_avisota_recipient_source'
-            && $event->getPropertyName() != 'membersPropertyFilter')
+             && $event->getPropertyName() != 'membersPropertyFilter')
             || $event->getSubPropertyName() != 'membersPropertyFilter_property'
         ) {
             return;
